@@ -19,9 +19,9 @@
   	<Description>Single/generic WebApi handler (mediator ready)</Description>
   	<PackageTags>dotnet webapp webapi api extension single generic endpoint handler mediator</PackageTags>
   	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-  	<!--<PackageProjectUrl>https://github.com/mustaddon/SingleApi</PackageProjectUrl>
+  	<PackageProjectUrl>https://github.com/mustaddon/SingleApi</PackageProjectUrl>
   	<RepositoryUrl>https://github.com/mustaddon/SingleApi</RepositoryUrl>
-  	<RepositoryType>git</RepositoryType>-->
+  	<RepositoryType>git</RepositoryType>
   	<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
   	<PackageLicenseExpression>MIT</PackageLicenseExpression>
   	<NeutralLanguage />
