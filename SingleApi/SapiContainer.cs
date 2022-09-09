@@ -18,12 +18,12 @@ namespace SingleApi
         {
             var type = FindRootType(typeStr);
 
-            AddHeaders(ctx, _noCacheHeaders);
+            AddHeaders(ctx, NoCacheHeaders);
 
             return handler(new SapiDelegateArgs(
                 httpContext: ctx,
                 dataType: type,
-                data: JsonSerializer.Deserialize(data, type),
+                data: JsonSerializer.Deserialize(data, type, JsonSerializerOptions),
                 cancellationToken: cancellationToken));
         }
 
@@ -31,12 +31,12 @@ namespace SingleApi
         {
             var type = FindRootType(typeStr);
 
-            AddHeaders(ctx, _noCacheHeaders);
+            AddHeaders(ctx, NoCacheHeaders);
 
             return handler(new SapiDelegateArgs(
                 httpContext: ctx,
                 dataType: type,
-                data: json.Deserialize(type),
+                data: json.Deserialize(type, JsonSerializerOptions),
                 cancellationToken: cancellationToken));
         }
 
@@ -114,11 +114,16 @@ namespace SingleApi
                 ctx.Response.Headers[kvp.Key] = kvp.Value;
         }
 
-        static readonly Dictionary<string, string> _noCacheHeaders = new()
+        static readonly Dictionary<string, string> NoCacheHeaders = new()
         {
             { "Cache-Control", "no-cache, no-store, must-revalidate" },
             { "Pragma", "no-cache" },
             { "Expires", "0" },
+        };
+
+        static readonly JsonSerializerOptions JsonSerializerOptions = new()
+        {
+            PropertyNameCaseInsensitive = true,
         };
     }
 }

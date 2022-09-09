@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\SingleApi\SingleApi.csproj" />
+    <ProjectReference Include="..\Test.Common\Test.Common.csproj" />
   </ItemGroup>
 
 </Project>
