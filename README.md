@@ -56,14 +56,15 @@ POST /sapi/Ping
 
 
 ## Example 3: Generic types
-```
+```C#
 app.MapSingleApi("sapi", 
     // for simplicity, return the received data
     x => Task.FromResult(x.Data), 
     // existing generic types will suffice for this example
     typeof(List<>).Assembly, typeof(int).Assembly); 
+```
 
-
+```
 // Request #1: equivalent of List<String>
 POST /sapi/List(String)
 ["text1","text2","text3"]
