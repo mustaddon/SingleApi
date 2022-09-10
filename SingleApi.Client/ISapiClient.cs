@@ -3,7 +3,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace SingleApi
+namespace SingleApi.Client
 {
     public interface ISapiClient
     {
@@ -27,10 +27,7 @@ namespace SingleApi
                 resultType: typeof(TResult),
                 cancellationToken: cancellationToken);
 
-            if (result is TResult typed)
-                return typed;
-
-            return (TResult?)result;
+            return result is TResult typed ? typed : (TResult?)result;
         }
 
         public static async Task<TResult?> Send<TResult>(this ISapiClient client, IRequest<TResult> request, CancellationToken cancellationToken = default)
@@ -40,10 +37,7 @@ namespace SingleApi
                 resultType: typeof(TResult),
                 cancellationToken: cancellationToken);
 
-            if (result is TResult typed)
-                return typed;
-
-            return (TResult?)result;
+            return result is TResult typed ? typed : (TResult?)result;
         }
 
     }

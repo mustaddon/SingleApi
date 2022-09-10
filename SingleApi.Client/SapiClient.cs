@@ -6,7 +6,7 @@ using System.Net.Http.Json;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace SingleApi
+namespace SingleApi.Client
 {
     public class SapiClient : ISapiClient, IDisposable
     {
@@ -56,11 +56,14 @@ namespace SingleApi
 
         private HttpClient CreateClient(string address)
         {
+            if (!address.EndsWith("/"))
+                address += "/";
+
             var handler = _settings.Credentials != null
                 ? new HttpClientHandler { Credentials = _settings.Credentials }
                 : new HttpClientHandler { UseDefaultCredentials = true };
 
-            var client = new HttpClient(handler) { BaseAddress = new Uri(address.TrimEnd('/')+'/') };
+            var client = new HttpClient(handler) { BaseAddress = new Uri(address) };
 
             foreach (var kvp in _settings.DefaultRequestHeaders)
                 client.DefaultRequestHeaders.Add(kvp.Key, kvp.Value);

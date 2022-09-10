@@ -25,10 +25,10 @@ namespace Microsoft.AspNetCore.Builder
             return new EndpointConventionBuilder(new List<IEndpointConventionBuilder>()
             {
                 builder.MapGet(pattern, (HttpContext context, [FromRoute]string type, [FromQuery]string data, CancellationToken cancellationToken)
-                    => container.Run(context, type, data, handler, cancellationToken)),
+                    => container.Get(context, type, data, handler, cancellationToken)),
 
                 builder.MapPost(pattern, (HttpContext context, [FromRoute]string type, [FromBody]JsonElement json, CancellationToken cancellationToken)
-                    => container.Run(context, type, json, handler, cancellationToken)),
+                    => container.Post(context, type, json, handler, cancellationToken)),
             });
         }
     }

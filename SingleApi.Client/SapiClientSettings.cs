@@ -2,7 +2,7 @@
 using System.Net;
 using System.Text.Json;
 
-namespace SingleApi
+namespace SingleApi.Client
 {
     public class SapiClientSettings
     {

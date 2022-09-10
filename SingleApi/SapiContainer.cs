@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System.Collections.Concurrent;
+using System.Net.Http.Headers;
 using System.Text.Json;
 
 namespace SingleApi
@@ -14,7 +15,7 @@ namespace SingleApi
         readonly IEnumerable<Type> _types;
         readonly ConcurrentDictionary<string, Type> _typesMap = new();
 
-        public Task<object?> Run(HttpContext ctx, string typeStr, string data, SapiDelegate handler, CancellationToken cancellationToken)
+        public Task<object?> Get(HttpContext ctx, string typeStr, string data, SapiDelegate handler, CancellationToken cancellationToken)
         {
             var type = FindRootType(typeStr);
 
@@ -27,11 +28,9 @@ namespace SingleApi
                 cancellationToken: cancellationToken));
         }
 
-        public Task<object?> Run(HttpContext ctx, string typeStr, JsonElement json, SapiDelegate handler, CancellationToken cancellationToken)
+        public Task<object?> Post(HttpContext ctx, string typeStr, JsonElement json, SapiDelegate handler, CancellationToken cancellationToken)
         {
             var type = FindRootType(typeStr);
-
-            AddHeaders(ctx, NoCacheHeaders);
 
             return handler(new SapiDelegateArgs(
                 httpContext: ctx,
