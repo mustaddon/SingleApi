@@ -1,3 +1,4 @@
+using Example;
 using MediatR;
 using System.Reflection;
 
@@ -11,6 +12,6 @@ app.MapSingleApi("sapi",
     // invoke the MediatR
     x => x.ServiceProvider.GetRequiredService<IMediator>().Send(x.Data, x.CancellationToken),
     // assemblies for type resolving
-    Assembly.GetExecutingAssembly()); 
+    typeof(Ping).Assembly); 
 
 app.Run();

@@ -1,15 +1,16 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+	<RootNamespace>Example</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\SingleApi.Client\SingleApi.Client.csproj" />
-    <ProjectReference Include="..\Test.Common\Test.Common.csproj" />
+    <PackageReference Include="SingleApi.Client" Version="1.0.0" />
+    <ProjectReference Include="..\Example.Common\Example.Common.csproj" />
   </ItemGroup>
 
 </Project>

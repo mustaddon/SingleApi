@@ -1,45 +1,18 @@
-﻿using Microsoft.AspNetCore.Http;
-using System.Collections.Concurrent;
-using System.Net.Http.Headers;
-using System.Text.Json;
+﻿using System.Collections.Concurrent;
 
 namespace SingleApi
 {
-    class SapiContainer
+    public class TypeDeserializer
     {
-        public SapiContainer(IEnumerable<Type> types)
+        public TypeDeserializer(IEnumerable<Type> types)
         {
-            _types = types.Where(x => !x.IsAbstract);
+            _types = types;
         }
 
         readonly IEnumerable<Type> _types;
         readonly ConcurrentDictionary<string, Type> _typesMap = new();
 
-        public Task<object?> Get(HttpContext ctx, string typeStr, string data, SapiDelegate handler, CancellationToken cancellationToken)
-        {
-            var type = FindRootType(typeStr);
-
-            AddHeaders(ctx, NoCacheHeaders);
-
-            return handler(new SapiDelegateArgs(
-                httpContext: ctx,
-                dataType: type,
-                data: JsonSerializer.Deserialize(data, type, JsonSerializerOptions),
-                cancellationToken: cancellationToken));
-        }
-
-        public Task<object?> Post(HttpContext ctx, string typeStr, JsonElement json, SapiDelegate handler, CancellationToken cancellationToken)
-        {
-            var type = FindRootType(typeStr);
-
-            return handler(new SapiDelegateArgs(
-                httpContext: ctx,
-                dataType: type,
-                data: json.Deserialize(type, JsonSerializerOptions),
-                cancellationToken: cancellationToken));
-        }
-
-        Type FindRootType(string str)
+        public Type Deserialize(string str)
         {
             if (_typesMap.TryGetValue(str, out var type))
                 return type;
@@ -106,23 +79,5 @@ namespace SingleApi
 
             return result;
         }
-
-        static void AddHeaders(HttpContext ctx, IEnumerable<KeyValuePair<string, string>> kvps)
-        {
-            foreach (var kvp in kvps)
-                ctx.Response.Headers[kvp.Key] = kvp.Value;
-        }
-
-        static readonly Dictionary<string, string> NoCacheHeaders = new()
-        {
-            { "Cache-Control", "no-cache, no-store, must-revalidate" },
-            { "Pragma", "no-cache" },
-            { "Expires", "0" },
-        };
-
-        static readonly JsonSerializerOptions JsonSerializerOptions = new()
-        {
-            PropertyNameCaseInsensitive = true,
-        };
     }
 }

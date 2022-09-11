@@ -6,8 +6,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="SingleApi" Version="0.7.1" />
+    <PackageReference Include="SingleApi" Version="1.0.0" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="10.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Example.Common\Example.Common.csproj" />
   </ItemGroup>
 
 </Project>
