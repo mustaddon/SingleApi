@@ -6,9 +6,9 @@
     <Nullable>enable</Nullable>
     <SignAssembly>True</SignAssembly>
     <AssemblyOriginatorKeyFile>..\SingleApi.snk</AssemblyOriginatorKeyFile>
-	<AssemblyVersion>1.0.0</AssemblyVersion>
-    <FileVersion>1.0.0</FileVersion>
-    <Version>1.0.0</Version>
+	<AssemblyVersion>1.0.1</AssemblyVersion>
+    <FileVersion>1.0.1</FileVersion>
+    <Version>1.0.1</Version>
 	<Company></Company>
     <Authors>Leonid Salavatov</Authors>
     <Copyright>Leonid Salavatov 2022</Copyright>
@@ -18,8 +18,8 @@
   	<Description>.NET SingleApi client</Description>
   	<PackageTags>dotnet singleapi sapi endpoint mediator client</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageProjectUrl>https://github.com/mustaddon/SingleApi/SingleApi.Client</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/mustaddon/SingleApi/SingleApi.Client</RepositoryUrl>
+  	<PackageProjectUrl>https://github.com/mustaddon/SingleApi</PackageProjectUrl>
+  	<RepositoryUrl>https://github.com/mustaddon/SingleApi</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
