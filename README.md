@@ -76,7 +76,7 @@ POST /sapi/Dictionary(String,Array(Nullable(Int32)))
 ```
 
 
-## Example 4: SingleApi.Client
+## Example 4: .NET client
 .NET CLI
 ```
 dotnet new console --name "SapiClientExample"

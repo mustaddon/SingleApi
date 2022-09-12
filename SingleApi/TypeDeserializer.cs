@@ -12,12 +12,15 @@ namespace SingleApi
         readonly IEnumerable<Type> _types;
         readonly ConcurrentDictionary<string, Type> _typesMap = new();
 
-        public Type Deserialize(string str)
+        /// <summary>Converts the string representation of a type to an object type.</summary>
+        /// <param name="value">A string like: "Array(Int32)", "List(String)", ...</param>
+        /// <returns>An object type.</returns>
+        public Type Deserialize(string value)
         {
-            if (_typesMap.TryGetValue(str, out var type))
+            if (_typesMap.TryGetValue(value, out var type))
                 return type;
 
-            _typesMap.TryAdd(str, type = FindType(str));
+            _typesMap.TryAdd(value, type = FindType(value));
             return type;
         }
 

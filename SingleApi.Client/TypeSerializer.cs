@@ -5,6 +5,9 @@ namespace SingleApi.Client
 {
     public static class TypeSerializer
     {
+        /// <summary>Converts an object type to a string representation.</summary>
+        /// <param name="type">An object type</param>
+        /// <returns>A string like: "Array(Int32)", "List(String)", ...</returns>
         public static string Serialize(this Type type)
         {
             if (type.IsArray)
