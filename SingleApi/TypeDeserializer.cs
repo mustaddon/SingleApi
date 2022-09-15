@@ -13,18 +13,18 @@ namespace SingleApi
         readonly ConcurrentDictionary<string, Type> _typesMap = new();
 
         /// <summary>Converts the string representation of a type to an object type.</summary>
-        /// <param name="value">A string like: "Array(Int32)", "List(String)", ...</param>
+        /// <param name="value">A string like: "String", "Array(Int32)", "List(String)", ...</param>
         /// <returns>An object type.</returns>
         public Type Deserialize(string value)
         {
             if (_typesMap.TryGetValue(value, out var type))
                 return type;
 
-            _typesMap.TryAdd(value, type = FindType(value));
+            _typesMap.TryAdd(value, type = Parse(value));
             return type;
         }
 
-        Type FindType(string str)
+        Type Parse(string str)
         {
             if (str.Length == 0)
                 throw new ArgumentException("Invalid type string");
@@ -38,12 +38,12 @@ namespace SingleApi
             if (parts.Count < 2)
                 type = _types.FirstOrDefault(x => x.IsGenericType == false && x.Name == typeName);
             else if (parts.Count == 2 && typeName == nameof(Array))
-                type = Array.CreateInstance(FindType(parts.Last()), 0).GetType();
+                type = Array.CreateInstance(Parse(parts.Last()), 0).GetType();
             else
             {
                 typeName = $"{parts.First()}`{parts.Count - 1}";
                 type = _types.FirstOrDefault(x => x.IsGenericType == true && x.Name == typeName);
-                type = type?.MakeGenericType(parts.Skip(1).Select(x => FindType(x)).ToArray());
+                type = type?.MakeGenericType(parts.Skip(1).Select(x => Parse(x)).ToArray());
             }
 
             return type ?? throw new Exception($"Type '{str}' not found");

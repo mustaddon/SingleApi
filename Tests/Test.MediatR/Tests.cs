@@ -2,15 +2,15 @@ using SingleApi.Client;
 
 namespace Test.MediatR
 {
-    public class Tests
+    public class Tests : IDisposable
     {
-        [SetUp]
-        public void Setup()
-        {
-            _client = new SapiClient($"{Settings.WebApiUrl}mediatr");
-        }
+        readonly SapiClient _client = new ($"{Settings.WebApiUrl}mediatr");
 
-        SapiClient _client;
+        public void Dispose()
+        {
+            _client?.Dispose();
+            GC.SuppressFinalize(this);
+        }
 
         [Test]
         public async Task TestPingPong()

@@ -4,7 +4,7 @@ namespace SingleApi
 {
     public delegate Task<object?> SapiDelegate(SapiDelegateArgs args);
 
-    public class SapiDelegateArgs
+    public sealed class SapiDelegateArgs
     {
         internal SapiDelegateArgs(HttpContext httpContext, Type dataType, object? data, CancellationToken cancellationToken)
         {

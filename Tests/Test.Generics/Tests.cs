@@ -2,47 +2,48 @@ using SingleApi.Client;
 
 namespace Test.Generics
 {
-    public class Tests
+    public class Tests : IDisposable
     {
-        [SetUp]
-        public void Setup()
+        readonly SapiClient _client = new ($"{Settings.WebApiUrl}sapi");
+
+        public void Dispose()
         {
-            _client = new SapiClient($"{Settings.WebApiUrl}sapi");
+            _client?.Dispose();
+            GC.SuppressFinalize(this);
         }
 
-        SapiClient _client;
 
         [Test]
         public async Task TestArray()
         {
-            var data = new int?[] { 555, null, 666 };
+            var request = new int?[] { 555, null, 666 };
 
-            var response = await _client.Send<int?[], int?[]>(data);
+            var response = await _client.Send<int?[], int?[]>(request);
 
-            Assert.That(response, Is.EquivalentTo(data));
+            Assert.That(response, Is.EquivalentTo(request));
         }
 
         [Test]
         public async Task TestList()
         {
-            var data = new List<int> { 111, 222, 333 };
+            var request = new List<int> { 111, 222, 333 };
 
-            var response = await _client.Send<List<int>, List<int>>(data);
+            var response = await _client.Send<List<int>, List<int>>(request);
 
-            Assert.That(response, Is.EquivalentTo(data));
+            Assert.That(response, Is.EquivalentTo(request));
         }
 
         [Test]
         public async Task TestDictionary()
         {
-            var data = new Dictionary<string, int[]> {
+            var request = new Dictionary<string, int[]> {
                 { "key_1", new [] { 1, 11, 111 } },
                 { "key_2", new [] { 2, 22, 222 } },
             };
 
-            var response = await _client.Send<Dictionary<string, int[]>, Dictionary<string, int[]>>(data);
+            var response = await _client.Send<Dictionary<string, int[]>, Dictionary<string, int[]>>(request);
 
-            Assert.That(response, Is.EquivalentTo(data));
+            Assert.That(response, Is.EquivalentTo(request));
         }
     }
 }

@@ -37,6 +37,9 @@ namespace SingleApi.Client
 
             response.EnsureSuccessStatusCode();
 
+            if (resultType == typeof(string) && response.Content.Headers.ContentType.IsPlainText())
+                return await response.Content.ReadAsStringAsync();
+
             return await response.Content.ReadFromJsonAsync(resultType, _settings.JsonSerializerOptions, cancellationToken);
         }
 
