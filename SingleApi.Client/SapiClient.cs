@@ -29,18 +29,34 @@ namespace SingleApi.Client
             GC.SuppressFinalize(this);
         }
 
-        public async Task<object?> Send(object? request, Type requestType, Type resultType, CancellationToken cancellationToken = default)
+        public virtual Task<object?> Send(object? request, Type requestType, Type resultType, CancellationToken cancellationToken = default)
         {
-            using var response = await _client.Value.PostAsJsonAsync(requestType.Serialize(), request,
+            return GetResult(CreateRequest(request, requestType, cancellationToken), resultType, cancellationToken);
+        }
+
+        protected virtual Task<HttpResponseMessage> CreateRequest(object? request, Type requestType, CancellationToken cancellationToken)
+        {
+            return _client.Value.PostAsJsonAsync(requestType.Serialize(), request,
                 options: _settings.JsonSerializerOptions,
                 cancellationToken: cancellationToken);
+        }
 
-            response.EnsureSuccessStatusCode();
+        protected virtual async Task<object?> GetResult(Task<HttpResponseMessage> requestTask, Type resultType, CancellationToken cancellationToken)
+        {
+            var response = await requestTask;
 
-            if (resultType == typeof(string) && response.Content.Headers.ContentType.IsPlainText())
-                return await response.Content.ReadAsStringAsync();
+            response.EnsureSuccessStatusCodeDisposable();
 
-            return await response.Content.ReadFromJsonAsync(resultType, _settings.JsonSerializerOptions, cancellationToken);
+            if (resultType == typeof(SapiFile))
+                return await response.ToFileResult();
+
+            using (response)
+            {
+                if (resultType == typeof(string) && response.Content.Headers.ContentType.IsPlainText())
+                    return await response.Content.ReadAsStringAsync();
+
+                return await response.Content.ReadFromJsonAsync(resultType, _settings.JsonSerializerOptions, cancellationToken);
+            }
         }
 
         private HttpClient CreateClient(string address)

@@ -24,11 +24,11 @@ namespace Microsoft.AspNetCore.Builder
 
             return new EndpointConventionBuilder(new List<IEndpointConventionBuilder>()
             {
-                builder.MapGet(pattern, (HttpContext context, [FromRoute]string type, [FromQuery]string data, CancellationToken cancellationToken)
+                builder.MapGet(pattern, (HttpContext context, [FromRoute]string type, [FromQuery]string? data, CancellationToken cancellationToken)
                     => sapi.ProcessGet(context, type, data, handler, cancellationToken)),
 
-                builder.MapPost(pattern, (HttpContext context, [FromRoute]string type, [FromBody]JsonElement json, CancellationToken cancellationToken)
-                    => sapi.ProcessPost(context, type, json, handler, cancellationToken)),
+                builder.MapPost(pattern, (HttpContext context, [FromRoute]string type, CancellationToken cancellationToken)
+                    => sapi.ProcessPost(context, type, handler, cancellationToken)),
             });
         }
     }

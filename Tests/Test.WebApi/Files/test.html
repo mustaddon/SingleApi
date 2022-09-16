@@ -1,0 +1,30 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <input id="file" type="file" onchange="onChange(this)" />
+
+    <script>
+        async function onChange(e) {
+            if (!e.files.length)
+                return;
+
+            console.log('selected:', e.files[0]);
+
+            let r = await fetch('/mediatr/FileUpload', {
+                method: 'POST',
+                headers: {
+                    'content-type': e.files[0].type ?? 'application/octet-stream',
+                    'content-disposition': `attachment; filename=upload.tmp`,
+                },
+                body: e.files[0],
+            }).then(r => r.json());
+
+            console.log('result:', r);
+        }
+    </script>
+</body>
+</html>

@@ -10,7 +10,7 @@ var app = builder.Build();
 
 app.MapSingleApi("sapi", 
     // invoke the MediatR
-    x => x.ServiceProvider.GetRequiredService<IMediator>().Send(x.Data, x.CancellationToken),
+    x => x.ServiceProvider.GetRequiredService<IMediator>().Send(x.Data ?? Activator.CreateInstance(x.DataType), x.CancellationToken),
     // assemblies for type resolving
     typeof(Ping).Assembly); 
 

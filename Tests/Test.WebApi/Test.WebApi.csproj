@@ -14,4 +14,13 @@
     <ProjectReference Include="..\Test.Common\Test.Common.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Files\test.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Files\test.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
