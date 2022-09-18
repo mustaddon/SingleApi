@@ -17,11 +17,13 @@ namespace Test.Files
         public async Task TestDownload()
         {
             using var response = await _client.Send(new FileRequest());
-
-            Assert.That(response?.Name, Is.EqualTo(TestData.FileName));
-            Assert.That(response?.Type, Is.EqualTo(TestData.FileType));
-            Assert.That(response?.Content.ToText(), Is.EqualTo(TestData.FileContent));
+            
+            Assert.Multiple(() =>
+            {
+                Assert.That(response?.Name, Is.EqualTo(TestData.FileName));
+                Assert.That(response?.Type, Is.EqualTo(TestData.FileType));
+                Assert.That(response?.Content?.ToText(), Is.EqualTo(TestData.FileContent));
+            });
         }
-
     }
 }

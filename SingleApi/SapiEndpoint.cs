@@ -39,7 +39,7 @@ namespace SingleApi
         static async Task<object?> GetData(HttpContext ctx, Type type, CancellationToken cancellationToken)
         {
             if (typeof(ISapiFile).IsAssignableFrom(type))
-                return ctx.Request.ToSapiFile(type);
+                return ctx.Request.ToSapiFile(type, JsonSerializerOptions);
 
             return await JsonSerializer.DeserializeAsync(ctx.Request.Body, type, JsonSerializerOptions, cancellationToken);
         }
@@ -52,7 +52,7 @@ namespace SingleApi
                 return result;
 
             if (value is ISapiFile file)
-                return file.ToResult(ctx.Response);
+                return file.ToResult(ctx.Response, JsonSerializerOptions);
 
             return Results.Json(value, JsonSerializerOptions);
         }

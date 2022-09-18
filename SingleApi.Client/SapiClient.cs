@@ -47,8 +47,8 @@ namespace SingleApi.Client
 
             response.EnsureSuccessStatusCodeDisposable();
 
-            if (resultType == typeof(SapiFile))
-                return await response.ToFileResult();
+            if (typeof(ISapiFile).IsAssignableFrom(resultType))
+                return await response.ToSapiFile(resultType);
 
             using (response)
             {

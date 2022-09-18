@@ -3,23 +3,22 @@ using System.IO;
 
 namespace SingleApi
 {
-    public class SapiFile : ISapiFileResult, IDisposable
+    public class SapiFile : ISapiFile, ISapiFileResponse, IDisposable
     {
-        public SapiFile(Stream content)
-        {
-            Content = content;
-        }
-
-        public Stream Content { get; set; }
-        public string? Name { get; set; }
+        public Stream Content { get; set; } = Stream.Null;
         public string? Type { get; set; }
-        public bool Inline { get; set; }
-        public long Size { get; set; }
+        public string? Name { get; set; }
+        public SapiFileDispositions Disposition { get; set; } = SapiFileDispositions.Attachment;
 
         public void Dispose()
         {
-            Content?.Dispose();
+            Content.Dispose();
             GC.SuppressFinalize(this);
         }
+    }
+
+    public class SapiFile<TMetadata> : SapiFile, ISapiFile<TMetadata>
+    {
+        public TMetadata? Metadata { get; set; }
     }
 }

@@ -7,11 +7,10 @@ namespace SingleApi
         Stream Content { get; set; }
         string? Type { get; set; }
         string? Name { get; set; }
-        long Size { get; set; }
     }
 
-    public interface ISapiFileResult : ISapiFile
+    public interface ISapiFile<TMetadata> : ISapiFile
     {
-        bool Inline { get; set; }
+        TMetadata? Metadata { get; set; }
     }
 }

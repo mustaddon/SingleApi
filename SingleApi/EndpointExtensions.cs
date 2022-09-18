@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using SingleApi;
 using System.Reflection;
-using System.Text.Json;
 
 namespace Microsoft.AspNetCore.Builder
 {
@@ -14,7 +13,11 @@ namespace Microsoft.AspNetCore.Builder
             if (!assemblies.Any())
                 assemblies = new[] { Assembly.GetCallingAssembly(), typeof(List<>).Assembly, typeof(int).Assembly };
 
-            return MapSingleApi(builder, route, handler, assemblies.Distinct().ToArray().SelectMany(x => x.GetTypes()));
+            return MapSingleApi(builder, route, handler, assemblies
+                .Concat(new[] { typeof(SapiFile).Assembly })
+                .Distinct()
+                .ToArray()
+                .SelectMany(x => x.GetTypes()));
         }
 
         public static IEndpointConventionBuilder MapSingleApi(this IEndpointRouteBuilder builder, string route, SapiDelegate handler, IEnumerable<Type> types)

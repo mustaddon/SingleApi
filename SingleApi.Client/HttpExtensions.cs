@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Net.Mime;
 using System.Threading.Tasks;
 
 namespace SingleApi.Client
@@ -13,14 +12,20 @@ namespace SingleApi.Client
             return string.Equals(value?.MediaType, "text/plain", StringComparison.InvariantCultureIgnoreCase);
         }
 
-        public static async Task<SapiFile> ToFileResult(this HttpResponseMessage response)
+        public static async Task<ISapiFile?> ToSapiFile(this HttpResponseMessage response, Type type)
         {
-            return new SapiFile(new SapiStreamWrapper(await response.Content.ReadAsStreamAsync(), () => response.Dispose()))
-            {
-                Name = response.Content.Headers.ContentDisposition?.FileName,
-                Type = response.Content.Headers.ContentType?.MediaType,
-                Inline = string.Equals(response.Content.Headers.ContentDisposition?.DispositionType, DispositionTypeNames.Inline, StringComparison.InvariantCultureIgnoreCase),
-            };
+            if (Activator.CreateInstance(type) is not ISapiFile file)
+                return null;
+
+            file.Content = new SapiStreamWrapper(await response.Content.ReadAsStreamAsync(), () => response.Dispose());
+            file.Name = response.Content.Headers.ContentDisposition?.FileNameStar ?? response.Content.Headers.ContentDisposition?.FileName;
+            file.Type = response.Content.Headers.ContentType?.MediaType;
+
+            if (file is ISapiFileResponse fileResponse
+                && Enum.TryParse<SapiFileDispositions>(response.Content.Headers.ContentDisposition?.DispositionType, true, out var disposition))
+                fileResponse.Disposition = disposition;
+
+            return file;
         }
 
         public static void EnsureSuccessStatusCodeDisposable(this HttpResponseMessage response)

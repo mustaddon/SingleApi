@@ -12,15 +12,20 @@
             if (!e.files.length)
                 return;
 
-            console.log('selected:', e.files[0]);
+            const file = e.files[0];
+            console.log('selected:', file);
 
             let r = await fetch('/mediatr/FileUpload', {
                 method: 'POST',
                 headers: {
-                    'content-type': e.files[0].type ?? 'application/octet-stream',
-                    'content-disposition': `attachment; filename=upload.tmp`,
+                    'content-type': file.type ?? 'application/octet-stream',
+                    'content-disposition': `attachment; filename*=utf-8''` + encodeURIComponent(file.name),
+                    'sapi-metadata': encodeURIComponent(JSON.stringify({
+                        author: 'Test',
+                        date: new Date(),
+                    })),
                 },
-                body: e.files[0],
+                body: file,
             }).then(r => r.json());
 
             console.log('result:', r);
