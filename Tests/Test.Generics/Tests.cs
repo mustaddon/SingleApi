@@ -4,7 +4,7 @@ namespace Test.Generics
 {
     public class Tests : IDisposable
     {
-        readonly SapiClient _client = new ($"{Settings.WebApiUrl}sapi");
+        readonly SapiClient _client = new ($"{Settings.WebApiUrl}sapi", Settings.Client);
 
         public void Dispose()
         {

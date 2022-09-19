@@ -15,7 +15,7 @@
     <PackageId>SingleApi.Client</PackageId>
     <Product>SingleApi.Client</Product>
     <Title>SingleApi.Client</Title>
-  	<Description>.NET SingleApi client</Description>
+  	<Description>SingleApi client</Description>
   	<PackageTags>dotnet singleapi sapi endpoint handler mediator mediatr client</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   	<PackageProjectUrl>https://github.com/mustaddon/SingleApi</PackageProjectUrl>

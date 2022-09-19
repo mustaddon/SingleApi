@@ -4,7 +4,7 @@ namespace Test.MediatR
 {
     public class Tests : IDisposable
     {
-        readonly SapiClient _client = new ($"{Settings.WebApiUrl}mediatr");
+        readonly SapiClient _client = new ($"{Settings.WebApiUrl}mediatr", Settings.Client);
 
         public void Dispose()
         {

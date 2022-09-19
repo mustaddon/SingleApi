@@ -1,10 +1,11 @@
 # SingleApi [![NuGet version](https://badge.fury.io/nu/SingleApi.svg)](http://badge.fury.io/nu/SingleApi)
-Single/generic WebApi handler (mediator ready)
+Single/generic WebApi endpoint for mediators
 
 
 ## Features
-* Mediator ready
-* Generics support
+* Ready for mediators
+* Generics requests
+* File streams
 
 
 ## Example 1: SingleApi with MediatR
@@ -51,11 +52,11 @@ POST /sapi/Ping
 
 
 // Response
-{"message":"TEST PONG"}
+{"Message":"TEST PONG"}
 ```
 
 
-## Example 3: Generic types
+## Example 3: Generics requests
 ```C#
 app.MapSingleApi("sapi", 
     // for simplicity, return the received data
@@ -102,3 +103,48 @@ Console.WriteLine(response?.Message);
 ```
 
 [Example project...](https://github.com/mustaddon/SingleApi/tree/main/Examples/Example.Client)
+
+
+## Example 5: File upload
+Create RequestHandler
+```C#
+using MediatR;
+using SingleApi;
+namespace Example;
+
+public class FileUpload : IRequest<string>, ISapiFile
+{
+    public Stream Content { get; set; } = Stream.Null;
+    public string? Type { get; set; }
+    public string? Name { get; set; }
+}
+
+public class FileUploadHandler : IRequestHandler<FileUpload, string>
+{
+    public async Task<string> Handle(FileUpload request, CancellationToken cancellationToken)
+    {
+        var filePath = Path.GetFullPath(request.Name);
+        using var fileStream = File.Create(filePath);
+        await request.Content.CopyToAsync(fileStream, cancellationToken);
+        return filePath;
+    }
+}
+```
+
+Sending a file in JavaScript
+```js
+let file = document.getElementById('my-input').files[0];
+
+let response = await fetch('/sapi/FileUpload', {
+    method: 'POST',
+    headers: {
+        'content-type': file.type || 'application/octet-stream',
+        'content-disposition': `attachment; filename*=utf-8''` + encodeURIComponent(file.name),
+    },
+    body: file,
+});
+
+console.log('result:', await response.json());
+```
+
+[Example project...](https://github.com/mustaddon/SingleApi/tree/main/Examples/Example.MediatR)

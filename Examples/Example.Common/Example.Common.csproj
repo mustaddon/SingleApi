@@ -3,10 +3,13 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
 	<RootNamespace>Example</RootNamespace>
+    <Nullable>enable</Nullable>
+	<LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="MediatR.Contracts" Version="1.0.1" />
+    <PackageReference Include="SingleApi.Contracts" Version="1.0.0" />
   </ItemGroup>
 
 </Project>

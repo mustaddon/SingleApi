@@ -3,6 +3,6 @@
 
     public interface ISapiFileResponse : ISapiFile
     {
-        SapiFileDispositions Disposition { get; set; }
+        bool InlineDisposition { get; set; }
     }
 }

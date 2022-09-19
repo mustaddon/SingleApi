@@ -4,7 +4,7 @@ namespace Test
 {
     public class FileMetadata
     {
-        public string? Author { get; set; }
+        public string? User { get; set; }
         public DateTime? Date { get; set; }
     }
 }

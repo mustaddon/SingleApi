@@ -1,12 +1,10 @@
 ﻿using MediatR;
+namespace Example.MediatR;
 
-namespace Example.MediatR
+public class PingHandler : IRequestHandler<Ping, Pong>
 {
-    public class PingHandler : IRequestHandler<Ping, Pong>
+    public Task<Pong> Handle(Ping request, CancellationToken cancellationToken)
     {
-        public Task<Pong> Handle(Ping request, CancellationToken cancellationToken)
-        {
-            return Task.FromResult(new Pong { Message = request.Message + " PONG" });
-        }
+        return Task.FromResult(new Pong { Message = request.Message + " PONG" });
     }
 }

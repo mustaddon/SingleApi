@@ -36,9 +36,10 @@ namespace SingleApi.Client
 
         protected virtual Task<HttpResponseMessage> CreateRequest(object? request, Type requestType, CancellationToken cancellationToken)
         {
-            return _client.Value.PostAsJsonAsync(requestType.Serialize(), request,
-                options: _settings.JsonSerializerOptions,
-                cancellationToken: cancellationToken);
+            if (typeof(ISapiFile).IsAssignableFrom(requestType))
+                return _client.Value.PostAsSapiFile(requestType.Serialize(), request, requestType, _settings.JsonSerializerOptions, cancellationToken);
+
+            return _client.Value.PostAsJsonAsync(requestType.Serialize(), request, _settings.JsonSerializerOptions, cancellationToken);
         }
 
         protected virtual async Task<object?> GetResult(Task<HttpResponseMessage> requestTask, Type resultType, CancellationToken cancellationToken)
@@ -48,7 +49,7 @@ namespace SingleApi.Client
             response.EnsureSuccessStatusCodeDisposable();
 
             if (typeof(ISapiFile).IsAssignableFrom(resultType))
-                return await response.ToSapiFile(resultType);
+                return await response.ToSapiFile(resultType, _settings.JsonSerializerOptions);
 
             using (response)
             {

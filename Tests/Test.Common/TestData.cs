@@ -1,13 +1,23 @@
-﻿using SingleApi;
-using System.IO;
-using System.Text;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Test
 {
     public class TestData
     {
-        public static string FileContent = "text text text\ntext text text\ntext text text";
-        public static string FileName = "тест имени.txt";
-        public static string FileType = "text/plain";
+        public static readonly string FileContent = "text text text\ntext text text\ntext text text";
+        public static readonly string FileName = "тест имени.txt";
+        public static readonly string FileType = "text/plain";
+
+        public static readonly FileMetadata FileMetadata = new()
+        {
+            User = "Tester",
+            Date = new DateTime(2023, 5, 7, 11, 13, 17),
+        };
+
+        public static readonly Dictionary<string, IEnumerable<string>> Headers = new()
+        {
+            { "sapi-test", new [] { "value" } }
+        };
     }
 }

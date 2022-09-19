@@ -21,16 +21,14 @@ namespace SingleApi
             if (ContentDispositionHeaderValue.TryParse(httpRequest.Headers.ContentDisposition, out var contentDisposition))
                 file.Name = contentDisposition.FileNameStar ?? contentDisposition.FileName;
 
-            var fileType = file.GetType();
-
-            if (httpRequest.Headers.ContainsKey(HeaderNames.Metadata))
+            if (httpRequest.Headers.ContainsKey(SapiHeaders.Metadata))
             {
-                var metadataType = fileType.GetInterfaces().FirstOrDefault(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(ISapiFile<>))?.GenericTypeArguments.First();
+                var metadataType = type.GetInterfaces().FirstOrDefault(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(ISapiFile<>))?.GenericTypeArguments.First();
 
                 if (metadataType != null)
                 {
-                    var metadata = JsonSerializer.Deserialize(Uri.UnescapeDataString(httpRequest.Headers[HeaderNames.Metadata]), metadataType, jsonOptions);
-                    var metadataProp = fileType.GetProperty(nameof(ISapiFile<int>.Metadata));
+                    var metadata = JsonSerializer.Deserialize(Uri.UnescapeDataString(httpRequest.Headers[SapiHeaders.Metadata]), metadataType, jsonOptions);
+                    var metadataProp = type.GetProperty(nameof(ISapiFile<int>.Metadata));
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
                     metadataProp.SetValue(file, metadata);
 #pragma warning restore CS8602 // Dereference of a possibly null reference.
@@ -42,7 +40,7 @@ namespace SingleApi
 
         public static IResult ToResult(this ISapiFile file, HttpResponse httpResponse, JsonSerializerOptions jsonOptions)
         {
-            var dispositionType = (file as ISapiFileResponse)?.Disposition == SapiFileDispositions.Inline
+            var dispositionType = (file as ISapiFileResponse)?.InlineDisposition == true
                 ? DispositionTypeNames.Inline
                 : DispositionTypeNames.Attachment;
 
@@ -52,14 +50,17 @@ namespace SingleApi
                 FileNameStar = file.Name,
             }.ToString();
 
-            var fileType = file.GetType();
+            var type = file.GetType();
 
-            if (fileType.GetInterfaces().Any(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(ISapiFile<>)))
+            if (type.GetInterfaces().Any(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(ISapiFile<>)))
             {
-                var metadataProp = fileType.GetProperty(nameof(ISapiFile<int>.Metadata));
+                var metadataProp = type.GetProperty(nameof(ISapiFile<int>.Metadata));
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
-                httpResponse.Headers[HeaderNames.Metadata] = Uri.EscapeDataString(JsonSerializer.Serialize(metadataProp.GetValue(file), metadataProp.PropertyType, jsonOptions));
+                var metadata = metadataProp.GetValue(file);
 #pragma warning restore CS8602 // Dereference of a possibly null reference.
+
+                if (metadata != null)
+                    httpResponse.Headers[SapiHeaders.Metadata] = Uri.EscapeDataString(JsonSerializer.Serialize(metadata, metadataProp.PropertyType, jsonOptions));
             }
 
             return Results.Stream(file.Content, file.Type);

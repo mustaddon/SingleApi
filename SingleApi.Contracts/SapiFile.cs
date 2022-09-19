@@ -8,7 +8,7 @@ namespace SingleApi
         public Stream Content { get; set; } = Stream.Null;
         public string? Type { get; set; }
         public string? Name { get; set; }
-        public SapiFileDispositions Disposition { get; set; } = SapiFileDispositions.Attachment;
+        public bool InlineDisposition { get; set; }
 
         public void Dispose()
         {

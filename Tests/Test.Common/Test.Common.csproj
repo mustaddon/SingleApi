@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\SingleApi.Client\SingleApi.Client.csproj" />
     <ProjectReference Include="..\..\SingleApi.Contracts\SingleApi.Contracts.csproj" />
   </ItemGroup>
 
