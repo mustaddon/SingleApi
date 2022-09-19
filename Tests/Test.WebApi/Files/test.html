@@ -19,7 +19,7 @@
                 method: 'POST',
                 headers: {
                     'content-type': file.type || 'application/octet-stream',
-                    'content-disposition': `attachment; filename*=utf-8''` + encodeURIComponent(file.name),
+                    'content-disposition': `attachment; filename*=utf-8''${encodeURIComponent(file.name)}`,
                     'sapi-metadata': encodeURIComponent(JSON.stringify({
                         user: 'Tester',
                         date: new Date(),

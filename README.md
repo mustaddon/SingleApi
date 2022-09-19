@@ -139,7 +139,7 @@ let response = await fetch('/sapi/FileUpload', {
     method: 'POST',
     headers: {
         'content-type': file.type || 'application/octet-stream',
-        'content-disposition': `attachment; filename*=utf-8''` + encodeURIComponent(file.name),
+        'content-disposition': `attachment; filename*=utf-8''${encodeURIComponent(file.name)}`,
     },
     body: file,
 });

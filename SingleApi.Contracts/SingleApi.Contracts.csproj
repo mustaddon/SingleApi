@@ -17,7 +17,7 @@
     <Product>SingleApi.Contracts</Product>
     <Title>SingleApi.Contracts</Title>
   	<Description>SingleApi contracts package</Description>
-  	<PackageTags>dotnet singleapi sapi contracts abstractions</PackageTags>
+  	<PackageTags>singleapi sapi contracts abstractions</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   	<PackageProjectUrl>https://github.com/mustaddon/SingleApi</PackageProjectUrl>
   	<RepositoryUrl>https://github.com/mustaddon/SingleApi</RepositoryUrl>
