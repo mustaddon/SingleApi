@@ -16,7 +16,7 @@
     <Product>SingleApi.Client</Product>
     <Title>SingleApi.Client</Title>
   	<Description>SingleApi client</Description>
-  	<PackageTags>singleapi sapi endpoint handler mediator mediatr client</PackageTags>
+  	<PackageTags>singleapi sapi endpoint handler mediator mediatr cqrs client</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   	<PackageProjectUrl>https://github.com/mustaddon/SingleApi</PackageProjectUrl>
   	<RepositoryUrl>https://github.com/mustaddon/SingleApi</RepositoryUrl>

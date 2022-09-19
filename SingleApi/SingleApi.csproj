@@ -17,7 +17,7 @@
   	<Product>SingleApi</Product>
   	<Title>SingleApi</Title>
   	<Description>Single/generic WebApi endpoint for mediators</Description>
-  	<PackageTags>single generic endpoint handler mediator mediatr extension webapp webapi sapi api rest</PackageTags>
+  	<PackageTags>single generic endpoint handler mediator mediatr cqrs webapp webapi extension sapi api rest</PackageTags>
   	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   	<PackageProjectUrl>https://github.com/mustaddon/SingleApi</PackageProjectUrl>
   	<RepositoryUrl>https://github.com/mustaddon/SingleApi</RepositoryUrl>
