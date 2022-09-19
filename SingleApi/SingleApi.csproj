@@ -7,9 +7,9 @@
   	<ImplicitUsings>enable</ImplicitUsings>
     <SignAssembly>True</SignAssembly>
   	<AssemblyOriginatorKeyFile>..\SingleApi.snk</AssemblyOriginatorKeyFile>
-  	<AssemblyVersion>1.0.2</AssemblyVersion>
-  	<FileVersion>1.0.2</FileVersion>
-  	<Version>1.0.2</Version>
+  	<AssemblyVersion>1.1.0</AssemblyVersion>
+  	<FileVersion>1.1.0</FileVersion>
+  	<Version>1.1.0</Version>
   	<Company></Company>
   	<Authors>Leonid Salavatov</Authors>
   	<Copyright>Leonid Salavatov 2022</Copyright>
@@ -17,7 +17,7 @@
   	<Product>SingleApi</Product>
   	<Title>SingleApi</Title>
   	<Description>Single/generic WebApi endpoint for mediators</Description>
-  	<PackageTags>dotnet webapp webapi api extension single generic endpoint handler mediator mediatr</PackageTags>
+  	<PackageTags>single generic endpoint handler mediator mediatr extension webapp webapi sapi api rest</PackageTags>
   	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   	<PackageProjectUrl>https://github.com/mustaddon/SingleApi</PackageProjectUrl>
   	<RepositoryUrl>https://github.com/mustaddon/SingleApi</RepositoryUrl>
