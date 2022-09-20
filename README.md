@@ -9,7 +9,7 @@ Single/generic WebApi endpoint for mediators
 
 
 ## Example 1: SingleApi with MediatR
-.NET CLI
+*.NET CLI*
 ```
 dotnet new web --name "SingleApiExample"
 cd SingleApiExample
@@ -17,7 +17,7 @@ dotnet add package SingleApi
 dotnet add package MediatR.Extensions.Microsoft.DependencyInjection
 ```
 
-Change Program.cs
+*Change Program.cs*
 ```C#
 using MediatR;
 using System.Reflection;
@@ -41,17 +41,18 @@ app.Run();
 
 
 ## Example 2: Request/Response
+
+*Request*
 ```
-// Request
 GET /sapi/Ping?data={"Message":"TEST"}
 
 or
 
 POST /sapi/Ping
 {"Message":"TEST"}
-
-
-// Response
+```
+*Response*
+```
 {"Message":"TEST PONG"}
 ```
 
@@ -65,27 +66,27 @@ app.MapSingleApi("sapi",
     typeof(List<>).Assembly, typeof(int).Assembly); 
 ```
 
+*Request #1: Equivalent of List<String>*
 ```
-// Request #1: equivalent of List<String>
 POST /sapi/List(String)
 ["text1","text2","text3"]
-
-
-// Request #2: equivalent of Dictionary<string,int?[]>
+```
+*Request #2: Equivalent of Dictionary<string,int?[]>*
+```
 POST /sapi/Dictionary(String,Array(Nullable(Int32)))
 {"key1":[555,null,777]}
 ```
 
 
 ## Example 4: .NET client
-.NET CLI
+*.NET CLI*
 ```
 dotnet new console --name "SapiClientExample"
 cd SapiClientExample
 dotnet add package SingleApi.Client
 ```
 
-Program.cs:
+*Program.cs:*
 ```C#
 using SingleApi.Client;
 
@@ -96,17 +97,18 @@ using var sapi = new SapiClient("https://localhost:7263/sapi");
 var response = await sapi.Send(new Ping { Message = "TEST" });
 
 Console.WriteLine(response?.Message);
+```
 
-
-//// Console output:
-// TEST PONG
+*Console output:*
+```
+TEST PONG
 ```
 
 [Example project...](https://github.com/mustaddon/SingleApi/tree/main/Examples/Example.Client)
 
 
 ## Example 5: File upload
-Create RequestHandler
+*Create RequestHandler*
 ```C#
 using MediatR;
 using SingleApi;
@@ -131,7 +133,7 @@ public class FileUploadHandler : IRequestHandler<FileUpload, string>
 }
 ```
 
-Sending a file in JavaScript
+*Sending a file in JavaScript*
 ```js
 let file = document.getElementById('my-input').files[0];
 
