@@ -3,14 +3,14 @@
 
 
 ## Example: Usage
-.NET CLI
+*.NET CLI*
 ```
 dotnet new console --name "SapiClientExample"
 cd SapiClientExample
 dotnet add package SingleApi.Client
 ```
 
-Program.cs:
+*Program.cs:*
 ```C#
 using SingleApi.Client;
 
@@ -21,10 +21,11 @@ using var sapi = new SapiClient("https://localhost:7263/sapi");
 var response = await sapi.Send(new Ping { Message = "TEST" });
 
 Console.WriteLine(response?.Message);
+```
 
-
-//// Console output:
-// TEST PONG
+*Console output:*
+```
+TEST PONG
 ```
 
 [Example project...](https://github.com/mustaddon/SingleApi/tree/main/Examples/Example.Client)
