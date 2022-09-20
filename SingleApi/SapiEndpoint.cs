@@ -7,7 +7,9 @@ namespace SingleApi
     {
         public SapiEndpoint(IEnumerable<Type> types)
         {
-            _typeDeserializer = new TypeDeserializer(types.Where(x => !x.IsAbstract));
+            _typeDeserializer = new TypeDeserializer(types
+                .Concat(typeof(SapiFile).Assembly.GetTypes())
+                .Where(x => !x.IsAbstract && !x.IsAssignableTo(typeof(Attribute))));
         }
 
         readonly TypeDeserializer _typeDeserializer;

@@ -6,21 +6,22 @@ namespace SingleApi
     {
         public TypeDeserializer(IEnumerable<Type> types)
         {
-            _types = types;
+            _types = new Lazy<Dictionary<string, Type>>(() => types
+                .GroupBy(x => x.Name).ToDictionary(g => g.Key, g => g.First()));
         }
 
-        readonly IEnumerable<Type> _types;
-        readonly ConcurrentDictionary<string, Type> _typesMap = new();
+        readonly Lazy<Dictionary<string, Type>> _types;
+        readonly ConcurrentDictionary<string, Type> _deserialized = new();
 
         /// <summary>Converts the string representation of a type to an object type.</summary>
         /// <param name="value">A string like: "String", "Array(Int32)", "List(String)", ...</param>
         /// <returns>An object type.</returns>
         public Type Deserialize(string value)
         {
-            if (_typesMap.TryGetValue(value, out var type))
+            if (_deserialized.TryGetValue(value, out var type))
                 return type;
 
-            _typesMap.TryAdd(value, type = Parse(value));
+            _deserialized.TryAdd(value, type = Parse(value));
             return type;
         }
 
@@ -29,24 +30,17 @@ namespace SingleApi
             if (str.Length == 0)
                 throw new ArgumentException("Invalid type string");
 
-            if (_typesMap.TryGetValue(str, out var type))
-                return type;
-
             var parts = TypeParts(str);
             var typeName = parts.First();
 
-            if (parts.Count < 2)
-                type = _types.FirstOrDefault(x => x.IsGenericType == false && x.Name == typeName);
-            else if (parts.Count == 2 && typeName == nameof(Array))
-                type = Array.CreateInstance(Parse(parts.Last()), 0).GetType();
-            else
-            {
-                typeName = $"{parts.First()}`{parts.Count - 1}";
-                type = _types.FirstOrDefault(x => x.IsGenericType == true && x.Name == typeName);
-                type = type?.MakeGenericType(parts.Skip(1).Select(x => Parse(x)).ToArray());
-            }
+            if (parts.Count == 2 && typeName == nameof(Array))
+                return Array.CreateInstance(Parse(parts.Last()), 0).GetType();
 
-            return type ?? throw new Exception($"Type '{str}' not found");
+            var type = parts.Count == 1 ? _types.Value.GetValueOrDefault(typeName)
+                : _types.Value.GetValueOrDefault($"{typeName}`{parts.Count - 1}")
+                    ?.MakeGenericType(parts.Skip(1).Select(x => Parse(x)).ToArray());
+
+            return type ?? throw new KeyNotFoundException($"Type '{str}' not found");
         }
 
         static List<string> TypeParts(string str)
