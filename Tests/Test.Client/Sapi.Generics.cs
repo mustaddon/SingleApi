@@ -1,17 +1,7 @@
-using SingleApi.Client;
-
-namespace Test.Generics
+namespace Test.Client
 {
-    public class Tests : IDisposable
+    public partial class Sapi : IDisposable
     {
-        readonly SapiClient _client = new ($"{Settings.WebApiUrl}sapi", Settings.Client);
-
-        public void Dispose()
-        {
-            _client?.Dispose();
-            GC.SuppressFinalize(this);
-        }
-
 
         [Test]
         public async Task TestArray()

@@ -2,15 +2,15 @@
 
 namespace SingleApi
 {
-    public interface ISapiFile
+    public interface ISapiFile : ISapiFileReadOnly
     {
-        Stream Content { get; set; }
-        string? Type { get; set; }
-        string? Name { get; set; }
+        new Stream Content { get; set; }
+        new string? Type { get; set; }
+        new string? Name { get; set; }
     }
 
-    public interface ISapiFile<TMetadata> : ISapiFile
+    public interface ISapiFile<TMetadata> : ISapiFile, ISapiFileReadOnly<TMetadata>
     {
-        TMetadata? Metadata { get; set; }
+        new TMetadata? Metadata { get; set; }
     }
 }

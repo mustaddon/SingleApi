@@ -1,10 +1,8 @@
-using SingleApi.Client;
-
-namespace Test.Simples
+namespace Test.Client
 {
-    public class Tests : IDisposable
+    public partial class Sapi : IDisposable
     {
-        readonly SapiClient _client = new ($"{Settings.WebApiUrl}sapi");
+        readonly SapiClient _client = new($"{Settings.WebApiUrl}sapi");
 
         public void Dispose()
         {

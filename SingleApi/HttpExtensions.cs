@@ -38,7 +38,7 @@ namespace SingleApi
             return file;
         }
 
-        public static IResult ToResult(this ISapiFile file, HttpResponse httpResponse, JsonSerializerOptions jsonOptions)
+        public static IResult ToResult(this ISapiFileReadOnly file, HttpResponse httpResponse, JsonSerializerOptions jsonOptions)
         {
             var dispositionType = (file as ISapiFileResponse)?.InlineDisposition == true
                 ? DispositionTypeNames.Inline
@@ -50,18 +50,8 @@ namespace SingleApi
                 FileNameStar = file.Name,
             }.ToString();
 
-            var type = file.GetType();
-
-            if (type.GetInterfaces().Any(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(ISapiFile<>)))
-            {
-                var metadataProp = type.GetProperty(nameof(ISapiFile<int>.Metadata));
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
-                var metadata = metadataProp.GetValue(file);
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
-
-                if (metadata != null)
-                    httpResponse.Headers[SapiHeaders.Metadata] = Uri.EscapeDataString(JsonSerializer.Serialize(metadata, metadataProp.PropertyType, jsonOptions));
-            }
+            if (file is ISapiFileReadOnly<object> filePlus && filePlus.Metadata != null)
+                httpResponse.Headers[SapiHeaders.Metadata] = Uri.EscapeDataString(JsonSerializer.Serialize(filePlus.Metadata, jsonOptions));
 
             return Results.Stream(file.Content, file.Type);
         }

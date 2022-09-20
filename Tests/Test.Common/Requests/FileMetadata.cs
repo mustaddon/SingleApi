@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Test
+namespace Test.Requests
 {
     public class FileMetadata
     {

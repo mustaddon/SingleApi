@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace Test
+namespace Test.Requests
 {
     public class Ping : IRequest<Pong>
     {

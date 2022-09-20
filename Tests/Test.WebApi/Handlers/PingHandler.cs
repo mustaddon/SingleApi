@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Test.Requests;
 
 namespace Test.WebApi.Handlers
 {

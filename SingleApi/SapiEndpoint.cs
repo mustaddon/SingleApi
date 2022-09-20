@@ -51,7 +51,7 @@ namespace SingleApi
             if (value is IResult result)
                 return result;
 
-            if (value is ISapiFile file)
+            if (value is ISapiFileReadOnly file)
                 return file.ToResult(ctx.Response, JsonSerializerOptions);
 
             return Results.Json(value, JsonSerializerOptions);

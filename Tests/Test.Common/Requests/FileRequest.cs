@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using SingleApi;
 
-namespace Test
+namespace Test.Requests
 {
     public class FileRequest : IRequest<SapiFile<FileMetadata>>
     {

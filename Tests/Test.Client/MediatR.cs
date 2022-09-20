@@ -1,10 +1,8 @@
-using SingleApi.Client;
-
-namespace Test.MediatR
+﻿namespace Test.Client
 {
-    public class Tests : IDisposable
+    public partial class MediatR
     {
-        readonly SapiClient _client = new ($"{Settings.WebApiUrl}mediatr", Settings.Client);
+        readonly SapiClient _client = new($"{Settings.WebApiUrl}mediatr", Settings.Client);
 
         public void Dispose()
         {
@@ -19,6 +17,5 @@ namespace Test.MediatR
 
             Assert.That(response?.Message, Is.EqualTo("TEST PONG"));
         }
-
     }
 }

@@ -2,7 +2,7 @@
 using SingleApi;
 using System.IO;
 
-namespace Test
+namespace Test.Requests
 {
     public class FileUpload : ISapiFile, IRequest<FileUploadResult>
     {

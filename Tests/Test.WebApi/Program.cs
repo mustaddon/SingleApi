@@ -1,6 +1,6 @@
 using MediatR;
 using System.Reflection;
-using Test;
+using Test.Requests;
 using Test.WebApi.Handlers;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,7 +16,7 @@ builder.WebHost.ConfigureKestrel(options =>
 var app = builder.Build();
 
 app.MapSingleApi("mediatr", x => x.ServiceProvider.GetRequiredService<IMediator>().Send(x.Data ?? Activator.CreateInstance(x.DataType) ?? new object(), x.CancellationToken),
-    typeof(Test.Ping).Assembly, Assembly.GetExecutingAssembly());
+    typeof(Ping).Assembly, Assembly.GetExecutingAssembly());
 
 app.MapSingleApi("sapi", x => Task.FromResult(x.Data),
     typeof(List<>).Assembly, typeof(int).Assembly);

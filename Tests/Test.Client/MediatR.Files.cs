@@ -1,23 +1,13 @@
-using SingleApi.Client;
-using System.Text;
-
-namespace Test.Files
+﻿namespace Test.Client
 {
-    public class Tests : IDisposable
+    public partial class MediatR
     {
-        readonly SapiClient _client = new ($"{Settings.WebApiUrl}mediatr", Settings.Client);
-
-        public void Dispose()
-        {
-            _client?.Dispose();
-            GC.SuppressFinalize(this);
-        }
 
         [Test]
         public async Task TestDownload()
         {
             using var response = await _client.Send(new FileRequest());
-            
+
             Assert.Multiple(() =>
             {
                 Assert.That(response?.Name, Is.EqualTo(TestData.FileName));
@@ -46,7 +36,11 @@ namespace Test.Files
 
             Assert.That(response?.Path, Is.Not.Null);
 
-            var responseContent = await File.ReadAllBytesAsync(response.Path);
+#if NET6_0_OR_GREATER
+            var responseContent = response?.Path == null ? Array.Empty<byte>() : await File.ReadAllBytesAsync(response.Path);
+#else
+            var responseContent = response == null ? Array.Empty<byte>() : File.ReadAllBytes(response.Path);
+#endif
 
             Assert.Multiple(() =>
             {

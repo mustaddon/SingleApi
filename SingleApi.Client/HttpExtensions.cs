@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -11,12 +12,12 @@ namespace SingleApi.Client
 {
     internal static class HttpExtensions
     {
-        public static async Task<ISapiFile?> ToSapiFile(this HttpResponseMessage response, Type type, JsonSerializerOptions jsonOptions)
+        public static async Task<ISapiFile?> ToSapiFile(this HttpResponseMessage response, Type type, JsonSerializerOptions jsonOptions, CancellationToken cancellationToken)
         {
             if (Activator.CreateInstance(type) is not ISapiFile file)
                 return null;
 
-            file.Content = new SapiStreamWrapper(await response.Content.ReadAsStreamAsync(), () => response.Dispose());
+            file.Content = new SapiStreamWrapper(await response.Content.ReadAsStreamAsync(cancellationToken), () => response.Dispose());
             file.Name = response.Content.Headers.ContentDisposition?.FileNameStar ?? response.Content.Headers.ContentDisposition?.FileName;
             file.Type = response.Content.Headers.ContentType?.MediaType;
 
@@ -40,9 +41,9 @@ namespace SingleApi.Client
             return file;
         }
 
-        public static Task<HttpResponseMessage> PostAsSapiFile(this HttpClient client, string uri, object? request, Type type, JsonSerializerOptions jsonOptions, CancellationToken cancellationToken)
+        public static Task<HttpResponseMessage> PostAsSapiFile(this HttpClient client, string uri, object? request, JsonSerializerOptions jsonOptions, CancellationToken cancellationToken)
         {
-            if (request is not ISapiFile file)
+            if (request is not ISapiFileReadOnly file)
                 throw new ArgumentNullException(nameof(request));
 
             var content = new StreamContent(file.Content);
@@ -50,39 +51,39 @@ namespace SingleApi.Client
             if (file.Type != null)
                 content.Headers.ContentType = new MediaTypeHeaderValue(file.Type);
 
-            var dispositionType = (file as ISapiFileResponse)?.InlineDisposition == true
-                ? DispositionTypeNames.Inline
-                : DispositionTypeNames.Attachment;
-
-            content.Headers.ContentDisposition = new ContentDispositionHeaderValue(dispositionType)
+            content.Headers.ContentDisposition = new ContentDispositionHeaderValue(DispositionTypeNames.Attachment)
             {
                 FileName = file.Name,
                 FileNameStar = file.Name,
             };
 
-            if (type.GetInterfaces().Any(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(ISapiFile<>)))
-            {
-                var metadataProp = type.GetProperty(nameof(ISapiFile<int>.Metadata));
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
-                content.Headers.TryAddWithoutValidation(SapiHeaders.Metadata, Uri.EscapeDataString(JsonSerializer.Serialize(metadataProp.GetValue(file), metadataProp.PropertyType, jsonOptions)));
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
-            }
+            if (file is ISapiFileReadOnly<object> filePlus && filePlus.Metadata != null)
+                content.Headers.TryAddWithoutValidation(SapiHeaders.Metadata, Uri.EscapeDataString(JsonSerializer.Serialize(filePlus.Metadata, jsonOptions)));
 
             return client.PostAsync(uri, content, cancellationToken);
         }
 
         public static void EnsureSuccessStatusCodeDisposable(this HttpResponseMessage response)
         {
-            if (!response.IsSuccessStatusCode)
-            {
-                response.Dispose();
-                throw new HttpRequestException($"Response status code does not indicate success: {(int)response.StatusCode} ({response.ReasonPhrase})");
-            }
+            if (response.IsSuccessStatusCode)
+                return;
+
+            response.Dispose();
+            throw new HttpRequestException($"Response status code does not indicate success: {(int)response.StatusCode} ({response.ReasonPhrase})");
         }
 
         public static bool IsPlainText(this MediaTypeHeaderValue? value)
         {
             return string.Equals(value?.MediaType, "text/plain", StringComparison.InvariantCultureIgnoreCase);
         }
+
+
+#if NETSTANDARD2_0
+#pragma warning disable IDE0060 // Remove unused parameter
+        public static Task<Stream> ReadAsStreamAsync(this HttpContent httpContent, CancellationToken cancellationToken) => httpContent.ReadAsStreamAsync();
+        public static Task<string> ReadAsStringAsync(this HttpContent httpContent, CancellationToken cancellationToken) => httpContent.ReadAsStringAsync();
+#pragma warning restore IDE0060 // Remove unused parameter
+#endif
+
     }
 }
