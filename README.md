@@ -51,6 +51,7 @@ or
 POST /sapi/Ping
 {"Message":"TEST"}
 ```
+
 *Response*
 ```
 {"Message":"TEST PONG"}
@@ -66,11 +67,12 @@ app.MapSingleApi("sapi",
     typeof(List<>).Assembly, typeof(int).Assembly); 
 ```
 
-*Request #1: Equivalent of List<String>*
+*Request #1: Equivalent of List\<String>*
 ```
 POST /sapi/List(String)
 ["text1","text2","text3"]
 ```
+
 *Request #2: Equivalent of Dictionary<string,int?[]>*
 ```
 POST /sapi/Dictionary(String,Array(Nullable(Int32)))
