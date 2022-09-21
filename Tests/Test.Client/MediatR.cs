@@ -17,5 +17,16 @@
 
             Assert.That(response?.Message, Is.EqualTo("TEST PONG"));
         }
+
+        [Test]
+        public async Task TestLoop()
+        {
+            var request = new Looped { Number = 666 };
+            request.Child = request;
+            var response = await _client.Send(request);
+
+            Assert.That(response?.Number, Is.EqualTo(request.Number));
+            Assert.That(response?.Child, Is.Null);
+        }
     }
 }

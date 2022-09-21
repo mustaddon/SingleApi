@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="SingleApi.Client" Version="1.1.1" />
+    <PackageReference Include="SingleApi.Client" Version="1.1.3" />
   </ItemGroup>
 
   <ItemGroup>

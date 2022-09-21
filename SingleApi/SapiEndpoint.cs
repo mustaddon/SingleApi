@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace SingleApi
 {
@@ -62,6 +63,9 @@ namespace SingleApi
         static readonly JsonSerializerOptions JsonSerializerOptions = new()
         {
             PropertyNameCaseInsensitive = true,
+            ReferenceHandler = ReferenceHandler.IgnoreCycles,
+            IgnoreReadOnlyFields = true,
+            IgnoreReadOnlyProperties = true,
         };
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Net;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace SingleApi.Client
 {
@@ -13,6 +14,9 @@ namespace SingleApi.Client
         public JsonSerializerOptions JsonSerializerOptions { get; set; } = new()
         {
             PropertyNameCaseInsensitive = true,
+            ReferenceHandler = ReferenceHandler.IgnoreCycles,
+            IgnoreReadOnlyFields = true,
+            IgnoreReadOnlyProperties = true,
         };
     }
 }
