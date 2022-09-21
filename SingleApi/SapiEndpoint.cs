@@ -64,8 +64,6 @@ namespace SingleApi
         {
             PropertyNameCaseInsensitive = true,
             ReferenceHandler = ReferenceHandler.IgnoreCycles,
-            IgnoreReadOnlyFields = true,
-            IgnoreReadOnlyProperties = true,
         };
     }
 }

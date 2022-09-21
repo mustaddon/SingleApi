@@ -25,8 +25,10 @@
             request.Child = request;
             var response = await _client.Send(request);
 
-            Assert.That(response?.Number, Is.EqualTo(request.Number));
             Assert.That(response?.Child, Is.Null);
+            Assert.That(response?.Number, Is.EqualTo(request.Number));
+            Assert.That(response?.ReadonlyField, Is.EqualTo(request.ReadonlyField));
+            Assert.That(response?.ReadonlyProp, Is.EqualTo(request.ReadonlyProp));
         }
     }
 }
