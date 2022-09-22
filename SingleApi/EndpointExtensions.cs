@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using SingleApi;
 using System.Reflection;
+using System.Text.Json;
 
 namespace Microsoft.AspNetCore.Builder
 {
@@ -16,10 +17,10 @@ namespace Microsoft.AspNetCore.Builder
             return MapSingleApi(builder, route, handler, assemblies.SelectMany(x => x.GetTypes()));
         }
 
-        public static IEndpointConventionBuilder MapSingleApi(this IEndpointRouteBuilder builder, string route, SapiDelegate handler, IEnumerable<Type> types)
+        public static IEndpointConventionBuilder MapSingleApi(this IEndpointRouteBuilder builder, string route, SapiDelegate handler, IEnumerable<Type> types, JsonSerializerOptions? jsonOptions = null)
         {
             var pattern = route.EndsWith("/") ? $"{route}{{type:required}}" : $"{route}/{{type:required}}";
-            var sapi = new SapiEndpoint(types);
+            var sapi = new SapiEndpoint(types, jsonOptions);
 
             return new EndpointConventionBuilder(new List<IEndpointConventionBuilder>()
             {

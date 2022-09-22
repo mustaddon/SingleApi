@@ -11,7 +11,7 @@ namespace SingleApi.Client
     {
         public SapiClient(string address, SapiClientSettings? settings = null)
         {
-            _settings = settings ?? new();
+            _settings = settings ?? DefaultSettings;
             _client = new(() => CreateClient(address));
         }
 
@@ -76,5 +76,7 @@ namespace SingleApi.Client
 
             return client;
         }
+
+        private static readonly SapiClientSettings DefaultSettings = new ();
     }
 }

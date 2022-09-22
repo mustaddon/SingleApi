@@ -6,13 +6,16 @@ namespace SingleApi
 {
     class SapiEndpoint
     {
-        public SapiEndpoint(IEnumerable<Type> types)
+        public SapiEndpoint(IEnumerable<Type> types, JsonSerializerOptions? jsonOptions = null)
         {
             _typeDeserializer = new TypeDeserializer(types
                 .Concat(typeof(SapiFile).Assembly.GetTypes())
                 .Where(x => !x.IsAbstract && !x.IsAssignableTo(typeof(Attribute))));
+
+            _jsonOptions = jsonOptions ?? DefaultJsonOptions;
         }
 
+        readonly JsonSerializerOptions _jsonOptions;
         readonly TypeDeserializer _typeDeserializer;
 
         public Task<IResult> ProcessGet(HttpContext ctx, string typeStr, string? data, SapiDelegate handler, CancellationToken cancellationToken)
@@ -24,7 +27,7 @@ namespace SingleApi
             return GetResult(ctx, handler(new SapiDelegateArgs(
                 httpContext: ctx,
                 dataType: type,
-                data: data == null ? null : JsonSerializer.Deserialize(data, type, JsonSerializerOptions),
+                data: data == null ? null : JsonSerializer.Deserialize(data, type, _jsonOptions),
                 cancellationToken: cancellationToken)));
         }
 
@@ -39,15 +42,15 @@ namespace SingleApi
                 cancellationToken: cancellationToken)));
         }
 
-        static async Task<object?> GetData(HttpContext ctx, Type type, CancellationToken cancellationToken)
+        async Task<object?> GetData(HttpContext ctx, Type type, CancellationToken cancellationToken)
         {
             if (typeof(ISapiFile).IsAssignableFrom(type))
-                return ctx.Request.ToSapiFile(type, JsonSerializerOptions);
+                return ctx.Request.ToSapiFile(type, _jsonOptions);
 
-            return await JsonSerializer.DeserializeAsync(ctx.Request.Body, type, JsonSerializerOptions, cancellationToken);
+            return await JsonSerializer.DeserializeAsync(ctx.Request.Body, type, _jsonOptions, cancellationToken);
         }
 
-        static async Task<IResult> GetResult(HttpContext ctx, Task<object?> valueTask)
+        async Task<IResult> GetResult(HttpContext ctx, Task<object?> valueTask)
         {
             var value = await valueTask;
 
@@ -55,12 +58,12 @@ namespace SingleApi
                 return result;
 
             if (value is ISapiFileReadOnly file)
-                return file.ToResult(ctx.Response, JsonSerializerOptions);
+                return file.ToResult(ctx.Response, _jsonOptions);
 
-            return Results.Json(value, JsonSerializerOptions);
+            return Results.Json(value, _jsonOptions);
         }
 
-        static readonly JsonSerializerOptions JsonSerializerOptions = new()
+        static readonly JsonSerializerOptions DefaultJsonOptions = new()
         {
             PropertyNameCaseInsensitive = true,
             ReferenceHandler = ReferenceHandler.IgnoreCycles,

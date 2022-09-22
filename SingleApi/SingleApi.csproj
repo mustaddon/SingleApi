@@ -7,9 +7,9 @@
   	<ImplicitUsings>enable</ImplicitUsings>
     <SignAssembly>True</SignAssembly>
   	<AssemblyOriginatorKeyFile>..\SingleApi.snk</AssemblyOriginatorKeyFile>
-  	<AssemblyVersion>1.1.4</AssemblyVersion>
-  	<FileVersion>1.1.4</FileVersion>
-  	<Version>1.1.4</Version>
+  	<AssemblyVersion>1.1.5</AssemblyVersion>
+  	<FileVersion>1.1.5</FileVersion>
+  	<Version>1.1.5</Version>
   	<Company></Company>
   	<Authors>Leonid Salavatov</Authors>
   	<Copyright>Leonid Salavatov 2022</Copyright>
