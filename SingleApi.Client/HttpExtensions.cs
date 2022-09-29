@@ -32,9 +32,7 @@ namespace SingleApi.Client
                 {
                     var metadata = JsonSerializer.Deserialize(Uri.UnescapeDataString(metadataValues.First()), metadataType, jsonOptions);
                     var metadataProp = type.GetProperty(nameof(ISapiFile<int>.Metadata));
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
-                    metadataProp.SetValue(file, metadata);
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
+                    metadataProp!.SetValue(file, metadata);
                 }
             }
 

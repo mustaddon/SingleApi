@@ -11,9 +11,7 @@ namespace SingleApi.Client
         public static string Serialize(this Type type)
         {
             if (type.IsArray)
-#pragma warning disable CS8604 // Possible null reference argument.
-                return $"{nameof(Array)}({Serialize(type.GetElementType())})";
-#pragma warning restore CS8604 // Possible null reference argument.
+                return $"{nameof(Array)}({Serialize(type.GetElementType()!)})";
 
             if (!type.IsGenericType)
                 return type.Name;

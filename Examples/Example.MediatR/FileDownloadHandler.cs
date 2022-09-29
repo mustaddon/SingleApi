@@ -8,7 +8,7 @@ public class FileDownloadHandler : IRequestHandler<FileDownload, SapiFile>
     {
         return Task.FromResult(new SapiFile()
         {
-            Content = File.OpenRead(Path.GetFullPath(request.Path)),
+            Content = File.OpenRead(Path.GetFullPath(request.Path!)),
             Name = Path.GetFileName(request.Path),
         });
     }

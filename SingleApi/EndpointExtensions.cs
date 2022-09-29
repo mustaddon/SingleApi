@@ -19,10 +19,10 @@ namespace Microsoft.AspNetCore.Builder
 
         public static IEndpointConventionBuilder MapSingleApi(this IEndpointRouteBuilder builder, string route, SapiDelegate handler, IEnumerable<Type> types, JsonSerializerOptions? jsonOptions = null)
         {
-            var pattern = route.EndsWith("/") ? $"{route}{{type:required}}" : $"{route}/{{type:required}}";
+            var pattern = $"{route.TrimEnd('/')}/{{type:required}}";
             var sapi = new SapiEndpoint(types, jsonOptions);
 
-            return new EndpointConventionBuilder(new List<IEndpointConventionBuilder>()
+            return new EndpointConventionBuilder(new []
             {
                 builder.MapGet(pattern, (HttpContext context, [FromRoute]string type, [FromQuery]string? data, CancellationToken cancellationToken)
                     => sapi.ProcessGet(context, type, data, handler, cancellationToken)),

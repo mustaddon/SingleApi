@@ -15,7 +15,7 @@ builder.WebHost.ConfigureKestrel(options =>
 
 var app = builder.Build();
 
-app.MapSingleApi("mediatr", x => x.ServiceProvider.GetRequiredService<IMediator>().Send(x.Data ?? Activator.CreateInstance(x.DataType) ?? new object(), x.CancellationToken),
+app.MapSingleApi("mediatr", x => x.ServiceProvider.GetRequiredService<IMediator>().Send(x.Data ?? Activator.CreateInstance(x.DataType)!, x.CancellationToken),
     typeof(Ping).Assembly, Assembly.GetExecutingAssembly());
 
 app.MapSingleApi("sapi", x => Task.FromResult(x.Data),

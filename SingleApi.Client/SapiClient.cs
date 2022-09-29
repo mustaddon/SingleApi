@@ -60,7 +60,7 @@ namespace SingleApi.Client
             }
         }
 
-        private HttpClient CreateClient(string address)
+        protected virtual HttpClient CreateClient(string address)
         {
             if (!address.EndsWith("/"))
                 address += "/";
