@@ -1,9 +1,11 @@
 ﻿using System;
+using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using TypeSerialization;
 
 namespace SingleApi.Client
 {
@@ -51,6 +53,9 @@ namespace SingleApi.Client
             if (typeof(ISapiFile).IsAssignableFrom(resultType))
                 return await response.ToSapiFile(resultType, _settings.JsonSerializerOptions, cancellationToken);
 
+            if (resultType == typeof(Stream))
+                return new SapiStreamWrapper(await response.Content.ReadAsStreamAsync(cancellationToken), () => response.Dispose());
+
             using (response)
             {
                 if (resultType == typeof(string) && response.Content.Headers.ContentType.IsPlainText())
@@ -77,6 +82,6 @@ namespace SingleApi.Client
             return client;
         }
 
-        private static readonly SapiClientSettings DefaultSettings = new ();
+        private static readonly SapiClientSettings DefaultSettings = new();
     }
 }

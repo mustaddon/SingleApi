@@ -75,7 +75,7 @@ POST /sapi/List(String)
 
 *Request #2: Equivalent of Dictionary<string,int?[]>*
 ```
-POST /sapi/Dictionary(String,Array(Nullable(Int32)))
+POST /sapi/Dictionary(String-Array(Nullable(Int32)))
 {"key1":[555,null,777]}
 ```
 

@@ -2,9 +2,15 @@
 {
     public partial class MediatR
     {
+        [Test]
+        public async Task TestStreamDownload()
+        {
+            using var response = await _client.Send(new StreamRequest());
+            Assert.That(response?.ToText(), Is.EqualTo(TestData.FileContent));
+        }
 
         [Test]
-        public async Task TestDownload()
+        public async Task TestFileDownload()
         {
             using var response = await _client.Send(new FileRequest());
 
@@ -20,7 +26,7 @@
 
 
         [Test]
-        public async Task TestUpload()
+        public async Task TestFileUpload()
         {
             var requestContent = Encoding.UTF8.GetBytes(TestData.FileContent);
 

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using TypeSerialization;
 
 namespace SingleApi
 {
@@ -59,6 +60,9 @@ namespace SingleApi
 
             if (value is ISapiFileReadOnly file)
                 return file.ToResult(ctx.Response, _jsonOptions);
+
+            if (value is Stream stream)
+                return Results.Stream(stream);
 
             return Results.Json(value, _jsonOptions);
         }
