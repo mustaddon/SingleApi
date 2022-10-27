@@ -4,7 +4,7 @@ Single/generic WebApi endpoint for mediators
 
 ## Features
 * Ready for mediators
-* Generics requests
+* Generics support
 * File streams
 
 
