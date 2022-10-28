@@ -11,7 +11,8 @@ namespace SingleApi
         {
             _typeDeserializer = new TypeDeserializer(types
                 .Concat(typeof(SapiFile).Assembly.GetTypes())
-                .Where(x => !x.IsAbstract && !x.IsAssignableTo(typeof(Attribute))));
+                .Where(x => !x.IsAbstract && !x.IsAssignableTo(typeof(Attribute)))
+                .Concat(new[] { typeof(Stream) }));
 
             _jsonOptions = jsonOptions ?? DefaultJsonOptions;
         }
@@ -45,6 +46,9 @@ namespace SingleApi
 
         async Task<object?> GetData(HttpContext ctx, Type type, CancellationToken cancellationToken)
         {
+            if (type == typeof(Stream))
+                return new SapiRequestStream(ctx.Request);
+
             if (typeof(ISapiFile).IsAssignableFrom(type))
                 return ctx.Request.ToSapiFile(type, _jsonOptions);
 

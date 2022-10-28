@@ -38,6 +38,9 @@ namespace SingleApi.Client
 
         protected virtual Task<HttpResponseMessage> CreateRequest(object? request, Type requestType, CancellationToken cancellationToken)
         {
+            if (typeof(Stream).IsAssignableFrom(requestType))
+                return _client.Value.PostAsStream(typeof(Stream).Serialize(), request, cancellationToken);
+
             if (typeof(ISapiFile).IsAssignableFrom(requestType))
                 return _client.Value.PostAsSapiFile(requestType.Serialize(), request, _settings.JsonSerializerOptions, cancellationToken);
 

@@ -5,10 +5,12 @@
     <title></title>
 </head>
 <body>
-    <input id="file" type="file" onchange="onChange(this)" />
+    <input id="file" type="file" onchange="onFileChange(this)" />
+    <br/>
+    <input id="stream" type="file" onchange="onStreamChange(this)" />
 
     <script>
-        async function onChange(e) {
+        async function onFileChange(e) {
             if (!e.files.length)
                 return;
 
@@ -27,6 +29,24 @@
                 },
                 body: file,
             }).then(r => r.json());
+
+            console.log('result:', r);
+        }
+
+        async function onStreamChange(e) {
+            if (!e.files.length)
+                return;
+
+            const file = e.files[0];
+            console.log('selected:', file);
+
+            let r = await fetch('/sapi/Stream', {
+                method: 'POST',
+                headers: {
+                    'content-type': 'application/octet-stream',
+                },
+                body: file,
+            }).then(r => r.text());
 
             console.log('result:', r);
         }

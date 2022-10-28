@@ -18,7 +18,17 @@ var app = builder.Build();
 app.MapSingleApi("mediatr", x => x.ServiceProvider.GetRequiredService<IMediator>().Send(x.Data ?? Activator.CreateInstance(x.DataType)!, x.CancellationToken),
     typeof(Ping).Assembly, Assembly.GetExecutingAssembly());
 
-app.MapSingleApi("sapi", x => Task.FromResult(x.Data),
-    typeof(List<>).Assembly, typeof(int).Assembly);
+app.MapSingleApi("sapi", async (x) =>
+{
+    if (x.Data is Stream stream)
+    {
+        var ms = new MemoryStream();
+        await stream.CopyToAsync(ms, x.CancellationToken);
+        ms.Position = 0;
+        return ms;
+    }
+
+    return x.Data;
+}, typeof(List<>).Assembly, typeof(int).Assembly);
 
 app.Run();
