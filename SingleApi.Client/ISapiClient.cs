@@ -20,6 +20,16 @@ namespace SingleApi.Client
                 cancellationToken: cancellationToken);
         }
 
+        public static async Task<TResult?> Send<TResult>(this ISapiClient client, object request, CancellationToken cancellationToken = default)
+        {
+            var result = await client.Send(request ?? throw new ArgumentNullException(nameof(request)),
+                requestType: request.GetType(),
+                resultType: typeof(TResult),
+                cancellationToken: cancellationToken);
+
+            return result is TResult typed ? typed : (TResult?)result;
+        }
+
         public static async Task<TResult?> Send<TRequest, TResult>(this ISapiClient client, TRequest? request, CancellationToken cancellationToken = default)
         {
             var result = await client.Send(request,

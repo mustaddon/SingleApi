@@ -15,7 +15,7 @@ namespace Test.Client
         public async Task TestString()
         {
             var request = "test";
-            var response = await _client.Send<string, string>(request);
+            var response = await _client.Send<string>(request);
 
             Assert.That(response, Is.EqualTo(request));
         }
@@ -24,7 +24,7 @@ namespace Test.Client
         public async Task TestInt()
         {
             var request = 555;
-            var response = await _client.Send<int, int>(request);
+            var response = await _client.Send<int>(request);
 
             Assert.That(response, Is.EqualTo(request));
         }
@@ -33,7 +33,7 @@ namespace Test.Client
         public async Task TestNullable()
         {
             var request = (long?)777;
-            var response = await _client.Send<long?, long?>(request);
+            var response = await _client.Send<long?>(request);
             var responseNull = await _client.Send<long?, long?>(null);
 
             Assert.Multiple(() =>
@@ -47,7 +47,7 @@ namespace Test.Client
         public async Task TestDateTime()
         {
             var request = DateTime.Now;
-            var response = await _client.Send<DateTime, DateTime>(request);
+            var response = await _client.Send<DateTime>(request);
 
             Assert.That(response, Is.EqualTo(request));
         }

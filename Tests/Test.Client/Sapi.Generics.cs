@@ -8,7 +8,7 @@ namespace Test.Client
         {
             var request = new int?[] { 555, null, 666 };
 
-            var response = await _client.Send<int?[], int?[]>(request);
+            var response = await _client.Send<int?[]>(request);
 
             Assert.That(response, Is.EquivalentTo(request));
         }
@@ -18,7 +18,7 @@ namespace Test.Client
         {
             var request = new List<int> { 111, 222, 333 };
 
-            var response = await _client.Send<List<int>, List<int>>(request);
+            var response = await _client.Send<List<int>>(request);
 
             Assert.That(response, Is.EquivalentTo(request));
         }
@@ -31,7 +31,7 @@ namespace Test.Client
                 { "key_2", new [] { 2, 22, 222 } },
             };
 
-            var response = await _client.Send<Dictionary<string, int[]>, Dictionary<string, int[]>>(request);
+            var response = await _client.Send<Dictionary<string, int[]>>(request);
 
             Assert.That(response, Is.EquivalentTo(request));
         }
