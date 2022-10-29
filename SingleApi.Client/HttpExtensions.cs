@@ -14,8 +14,7 @@ namespace SingleApi.Client
     {
         public static async Task<ISapiFile?> ToSapiFile(this HttpResponseMessage response, Type type, JsonSerializerOptions jsonOptions, CancellationToken cancellationToken)
         {
-            if (Activator.CreateInstance(type) is not ISapiFile file)
-                return null;
+            var file = (ISapiFile)(Activator.CreateInstance(type) ?? throw new Exception($"Can not create instance of '{type}'."));
 
             file.Content = new SapiStreamWrapper(await response.Content.ReadAsStreamAsync(cancellationToken), () => response.Dispose());
             file.Name = response.Content.Headers.ContentDisposition?.FileNameStar ?? response.Content.Headers.ContentDisposition?.FileName;

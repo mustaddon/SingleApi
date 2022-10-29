@@ -10,8 +10,7 @@ namespace SingleApi
 
         public static ISapiFile? ToSapiFile(this HttpRequest httpRequest, Type type, JsonSerializerOptions jsonOptions)
         {
-            if (Activator.CreateInstance(type) is not ISapiFile file)
-                return null;
+            var file = (ISapiFile)(Activator.CreateInstance(type) ?? throw new Exception($"Can not create instance of '{type}'."));
 
             file.Content = new SapiRequestStream(httpRequest);
 

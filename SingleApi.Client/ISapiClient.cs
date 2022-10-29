@@ -27,7 +27,7 @@ namespace SingleApi.Client
                 resultType: typeof(TResult),
                 cancellationToken: cancellationToken);
 
-            return result is TResult typed ? typed : (TResult?)result;
+            return (TResult?)result;
         }
 
         public static async Task<TResult?> Send<TRequest, TResult>(this ISapiClient client, TRequest? request, CancellationToken cancellationToken = default)
@@ -37,7 +37,7 @@ namespace SingleApi.Client
                 resultType: typeof(TResult),
                 cancellationToken: cancellationToken);
 
-            return result is TResult typed ? typed : (TResult?)result;
+            return (TResult?)result;
         }
 
         public static async Task<TResult?> Send<TResult>(this ISapiClient client, IRequest<TResult> request, CancellationToken cancellationToken = default)
@@ -47,7 +47,7 @@ namespace SingleApi.Client
                 resultType: typeof(TResult),
                 cancellationToken: cancellationToken);
 
-            return result is TResult typed ? typed : (TResult?)result;
+            return (TResult?)result;
         }
 
     }
