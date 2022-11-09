@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net461;net6.0</TargetFrameworks>
+    <TargetFrameworks>net48;net6.0;net7.0</TargetFrameworks>
 	<RootNamespace>Test</RootNamespace>
     <Nullable>enable</Nullable>
 	<LangVersion>latest</LangVersion>
@@ -16,7 +16,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\SingleApi.Client\SingleApi.Client.csproj" />
-    <ProjectReference Include="..\..\SingleApi.Contracts\SingleApi.Contracts.csproj" />
     <ProjectReference Include="..\Test.Common\Test.Common.csproj" />
   </ItemGroup>
 

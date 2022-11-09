@@ -1,9 +1,9 @@
 ﻿using MediatR;
-using SingleApi;
+using MetaFile;
 
 namespace Test.Requests
 {
-    public class FileRequest : IRequest<SapiFile<FileMetadata>>
+    public class FileRequest : IRequest<HttpFile<FileMetadata>>
     {
         public string Name { get; set; } = string.Empty;
     }

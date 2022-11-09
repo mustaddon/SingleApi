@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using MetaFile;
+using MetaFile.Http.AspNetCore;
+using Microsoft.AspNetCore.Http;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using TypeSerialization;
@@ -10,7 +12,7 @@ namespace SingleApi
         public SapiEndpoint(IEnumerable<Type> types, JsonSerializerOptions? jsonOptions = null)
         {
             _typeDeserializer = new TypeDeserializer(types
-                .Concat(typeof(SapiFile).Assembly.GetTypes())
+                .Concat(typeof(StreamFile).Assembly.GetTypes())
                 .Where(x => !x.IsAbstract && !x.IsAssignableTo(typeof(Attribute)))
                 .Concat(new[] { typeof(Stream) }));
 
@@ -49,8 +51,8 @@ namespace SingleApi
             if (type == typeof(Stream))
                 return new SapiRequestStream(ctx.Request);
 
-            if (typeof(ISapiFile).IsAssignableFrom(type))
-                return ctx.Request.ToSapiFile(type, _jsonOptions);
+            if (typeof(IStreamFile).IsAssignableFrom(type))
+                return ctx.Request.ToStreamFile(type, _jsonOptions);
 
             return await JsonSerializer.DeserializeAsync(ctx.Request.Body, type, _jsonOptions, cancellationToken);
         }
@@ -59,10 +61,15 @@ namespace SingleApi
         {
             var value = await valueTask;
 
+            if (value == null)
+                return Results.NoContent();
+
+            ctx.Response.Headers["sapi-result-type"] = value.GetType().Serialize();
+
             if (value is IResult result)
                 return result;
 
-            if (value is ISapiFileReadOnly file)
+            if (value is IStreamFileReadOnly file)
                 return file.ToResult(ctx.Response, _jsonOptions);
 
             if (value is Stream stream)

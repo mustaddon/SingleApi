@@ -1,9 +1,9 @@
 ﻿using MediatR;
-using SingleApi;
+using MetaFile;
 
 namespace Example;
 
-public class FileDownload : IRequest<SapiFile>
+public class FileDownload : IRequest<HttpFile>
 {
     public string? Path { get; set; }
 }

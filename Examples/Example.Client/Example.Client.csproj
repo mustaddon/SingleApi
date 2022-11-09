@@ -9,10 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="SingleApi.Client" Version="1.2.3" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <ProjectReference Include="..\..\SingleApi.Client\SingleApi.Client.csproj" />
     <ProjectReference Include="..\Example.Common\Example.Common.csproj" />
   </ItemGroup>
 

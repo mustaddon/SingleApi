@@ -5,7 +5,7 @@ Single/generic WebApi endpoint for mediators
 ## Features
 * Ready for mediators
 * Generics support
-* File streams
+* In/out file streams
 
 
 ## Example 1: SingleApi with MediatR
@@ -113,14 +113,12 @@ TEST PONG
 *Create RequestHandler*
 ```C#
 using MediatR;
-using SingleApi;
+using MetaFile;
 namespace Example;
 
-public class FileUpload : IRequest<string>, ISapiFile
+public class FileUpload : StreamFile, IRequest<string>
 {
-    public Stream Content { get; set; } = Stream.Null;
-    public string? Type { get; set; }
-    public string? Name { get; set; }
+
 }
 
 public class FileUploadHandler : IRequestHandler<FileUpload, string>

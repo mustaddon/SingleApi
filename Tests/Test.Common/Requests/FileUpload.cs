@@ -1,22 +1,15 @@
 ﻿using MediatR;
-using SingleApi;
-using System.IO;
+using MetaFile;
 
 namespace Test.Requests
 {
-    public class FileUpload : ISapiFile, IRequest<FileUploadResult>
+    public class FileUpload : StreamFile, IRequest<FileUploadResult>
     {
-        public Stream Content { get; set; } = Stream.Null;
-        public string? Type { get; set; }
-        public string? Name { get; set; }
     }
 
-    public class FileUpload<TMetadata> : ISapiFile<TMetadata>, IRequest<FileUploadResult<TMetadata>>
+    public class FileUpload<TMetadata> : StreamFile<TMetadata>, IRequest<FileUploadResult<TMetadata>>
     {
-        public Stream Content { get; set; } = Stream.Null;
-        public string? Type { get; set; }
-        public string? Name { get; set; }
-        public TMetadata? Metadata { get; set; }
+
     }
 
     public class FileUploadResult
