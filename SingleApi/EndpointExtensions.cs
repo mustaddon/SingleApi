@@ -1,35 +1,36 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Routing;
+﻿using Microsoft.AspNetCore.Routing;
 using SingleApi;
 using System.Reflection;
-using System.Text.Json;
 
-namespace Microsoft.AspNetCore.Builder
+namespace Microsoft.AspNetCore.Builder;
+
+public static class SingleApiExtensions
 {
-    public static class SingleApiExtensions
+    public static IEndpointConventionBuilder MapSingleApi(this IEndpointRouteBuilder builder, string route, SapiDelegate handler, IEnumerable<Type> types, Action<SapiOptions>? optionsConfigurator = null)
     {
-        public static IEndpointConventionBuilder MapSingleApi(this IEndpointRouteBuilder builder, string route, SapiDelegate handler, params Assembly[] assemblies)
+        var pattern = $"{route.TrimEnd('/')}/{{type:required}}";
+        var options = new SapiOptions(); optionsConfigurator?.Invoke(options);
+        var sapi = new SapiEndpoint(handler, types, options);
+
+        return new EndpointConventionBuilder(new[]
         {
-            if (!assemblies.Any())
-                assemblies = new[] { Assembly.GetCallingAssembly(), typeof(List<>).Assembly, typeof(int).Assembly };
+            builder.MapGet(pattern, sapi.ProcessGet),
+            builder.MapPost(pattern, sapi.ProcessPost),
+        });
+    }
 
-            return MapSingleApi(builder, route, handler, assemblies.SelectMany(x => x.GetTypes()));
-        }
+    public static IEndpointConventionBuilder MapSingleApi(this IEndpointRouteBuilder builder, string route, SapiDelegate handler, params Type[] types)
+    {
+        return MapSingleApi(builder, route, handler, types.AsEnumerable());
+    }
 
-        public static IEndpointConventionBuilder MapSingleApi(this IEndpointRouteBuilder builder, string route, SapiDelegate handler, IEnumerable<Type> types, JsonSerializerOptions? jsonOptions = null)
-        {
-            var pattern = $"{route.TrimEnd('/')}/{{type:required}}";
-            var sapi = new SapiEndpoint(types, jsonOptions);
+    public static IEndpointConventionBuilder MapSingleApi(this IEndpointRouteBuilder builder, string route, SapiDelegate handler, params Assembly[] assemblies)
+    {
+        if (!assemblies.Any())
+            assemblies = new[] { Assembly.GetCallingAssembly(), typeof(List<>).Assembly, typeof(int).Assembly };
 
-            return new EndpointConventionBuilder(new []
-            {
-                builder.MapGet(pattern, (HttpContext context, [FromRoute]string type, [FromQuery]string? data, CancellationToken cancellationToken)
-                    => sapi.ProcessGet(context, type, data, handler, cancellationToken)),
-
-                builder.MapPost(pattern, (HttpContext context, [FromRoute]string type, CancellationToken cancellationToken)
-                    => sapi.ProcessPost(context, type, handler, cancellationToken)),
-            });
-        }
+        return MapSingleApi(builder, route, handler, assemblies
+            .SelectMany(x => x.GetTypes())
+            .Where(x => !x.IsAbstract && !x.IsAttribute() && !x.IsException()));
     }
 }

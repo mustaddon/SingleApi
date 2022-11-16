@@ -10,7 +10,6 @@ public class SapiClientSettings
 {
     internal static readonly SapiClientSettings Default = new();
 
-
     public TypeDeserializer TypeDeserializer { get; set; } = TypeDeserializers.Default;
 
     public ICredentials? Credentials { get; set; }

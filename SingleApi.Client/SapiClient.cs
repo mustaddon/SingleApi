@@ -1,7 +1,5 @@
-﻿using MetaFile;
-using MetaFile.Http;
+﻿using MetaFile.Http;
 using System;
-using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -17,8 +15,8 @@ public class SapiClient : ISapiClient, IDisposable
 {
     public SapiClient(string address, SapiClientSettings? settings = null)
     {
-        _settings = settings ?? SapiClientSettings.Default;
         _client = new(() => CreateClient(address));
+        _settings = settings ?? SapiClientSettings.Default;
     }
 
     private readonly SapiClientSettings _settings;
@@ -42,10 +40,10 @@ public class SapiClient : ISapiClient, IDisposable
 
     protected virtual Task<HttpResponseMessage> CreateRequest(object? request, Type requestType, CancellationToken cancellationToken)
     {
-        if (typeof(Stream).IsAssignableFrom(requestType))
-            return _client.Value.PostAsStream(typeof(Stream).Serialize(), request, cancellationToken);
+        if (Types.Stream.IsAssignableFrom(requestType))
+            return _client.Value.PostAsStream(Types.Stream.Serialize(), request, cancellationToken);
 
-        if (typeof(IStreamFileReadOnly).IsAssignableFrom(requestType))
+        if (Types.IStreamFileReadOnly.IsAssignableFrom(requestType))
             return _client.Value.PostAsFile(requestType.Serialize(), request, _settings.JsonSerializerOptions, cancellationToken);
 
         return _client.Value.PostAsJsonAsync(requestType.Serialize(), request, _settings.JsonSerializerOptions, cancellationToken);
@@ -61,10 +59,10 @@ public class SapiClient : ISapiClient, IDisposable
             return null;
 
         if (resultType.Equals(Types.Object) && response.Headers.TryGetValues("sapi-result-type", out var resultTypeHeaders))
-            resultType = _settings.TypeDeserializer.Deserialize(resultTypeHeaders.First());
+            resultType = _settings.TypeDeserializer.Deserialize(resultTypeHeaders.First())!;
 
         if (resultType.Equals(Types.Stream))
-            return new StreamWrapper(await response.Content.ReadAsStreamAsync(cancellationToken), () => response.Dispose());
+            return new SapiStream(await response.Content.ReadAsStreamAsync(cancellationToken), () => response.Dispose());
 
         if (!resultType.Equals(Types.Object))
         {
@@ -77,7 +75,7 @@ public class SapiClient : ISapiClient, IDisposable
 
         using (response)
         {
-            if (resultType == typeof(string) && response.Content.Headers.ContentType.IsPlainText())
+            if (resultType == Types.String && response.Content.Headers.ContentType.IsPlainText())
                 return await response.Content.ReadAsStringAsync(cancellationToken);
 
             return await response.Content.ReadFromJsonAsync(resultType, _settings.JsonSerializerOptions, cancellationToken);
