@@ -2,7 +2,7 @@
 .NET SingleApi client
 
 
-## Example: Usage
+## Usage
 *.NET CLI*
 ```
 dotnet new console --name "SapiClientExample"
