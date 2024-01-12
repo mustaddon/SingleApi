@@ -5,7 +5,7 @@ using Test.WebApi.Handlers;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
 builder.Services.AddTransient<IRequestHandler<FileUpload<FileMetadata>, FileUploadResult<FileMetadata>>, FileUploadHandler<FileMetadata>>();
 
 builder.WebHost.ConfigureKestrel(options =>

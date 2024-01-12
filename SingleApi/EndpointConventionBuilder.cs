@@ -2,14 +2,9 @@
 
 namespace SingleApi;
 
-internal class EndpointConventionBuilder : IEndpointConventionBuilder
+internal class EndpointConventionBuilder(IEnumerable<IEndpointConventionBuilder> endpointConventionBuilders) : IEndpointConventionBuilder
 {
-    public EndpointConventionBuilder(IEnumerable<IEndpointConventionBuilder> endpointConventionBuilders)
-    {
-        _endpointConventionBuilders = endpointConventionBuilders;
-    }
-
-    readonly IEnumerable<IEndpointConventionBuilder> _endpointConventionBuilders;
+    readonly IEnumerable<IEndpointConventionBuilder> _endpointConventionBuilders = endpointConventionBuilders;
 
     public void Add(Action<EndpointBuilder> convention)
     {

@@ -1,18 +1,18 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-  	<TargetFrameworks>net6.0;net7.0</TargetFrameworks>
+  	<TargetFrameworks>net6.0;net7.0;net8.0</TargetFrameworks>
   	<LangVersion>latest</LangVersion>
   	<Nullable>enable</Nullable>
   	<ImplicitUsings>enable</ImplicitUsings>
     <SignAssembly>True</SignAssembly>
   	<AssemblyOriginatorKeyFile>..\SingleApi.snk</AssemblyOriginatorKeyFile>
-  	<AssemblyVersion>1.4.0</AssemblyVersion>
-  	<FileVersion>1.4.0</FileVersion>
-  	<Version>1.4.0</Version>
+  	<AssemblyVersion>1.5.0</AssemblyVersion>
+  	<FileVersion>1.5.0</FileVersion>
+  	<Version>1.5.0</Version>
   	<Company></Company>
   	<Authors>Leonid Salavatov</Authors>
-  	<Copyright>Leonid Salavatov 2022</Copyright>
+  	<Copyright>Leonid Salavatov 2024</Copyright>
   	<PackageId>SingleApi</PackageId>
   	<Product>SingleApi</Product>
   	<Title>SingleApi</Title>
@@ -27,61 +27,43 @@
   	<NeutralLanguage />
   	<PackageReleaseNotes></PackageReleaseNotes>
   </PropertyGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
-	<Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions">
-	  <HintPath>C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.11\ref\net6.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
-	</Reference>
-    <Reference Include="Microsoft.AspNetCore.Http.Abstractions">
-      <HintPath>C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.11\ref\net6.0\Microsoft.AspNetCore.Http.Abstractions.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.AspNetCore.Http.Features">
-      <HintPath>C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.11\ref\net6.0\Microsoft.AspNetCore.Http.Features.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.AspNetCore.Http.Results">
-      <HintPath>C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.11\ref\net6.0\Microsoft.AspNetCore.Http.Results.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Net.Http.Headers">
-      <HintPath>C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.11\ref\net6.0\Microsoft.Net.Http.Headers.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.AspNetCore.Routing">
-      <HintPath>C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.11\ref\net6.0\Microsoft.AspNetCore.Routing.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.Primitives">
-      <HintPath>C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.11\ref\net6.0\Microsoft.Extensions.Primitives.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'net7.0'">
-	<Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions">
-      <HintPath>C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\7.0.0\ref\net7.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
-	</Reference>
-    <Reference Include="Microsoft.AspNetCore.Http.Abstractions">
-      <HintPath>C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\7.0.0\ref\net7.0\Microsoft.AspNetCore.Http.Abstractions.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.AspNetCore.Http.Features">
-      <HintPath>C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\7.0.0\ref\net7.0\Microsoft.AspNetCore.Http.Features.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.AspNetCore.Http.Results">
-      <HintPath>C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\7.0.0\ref\net7.0\Microsoft.AspNetCore.Http.Results.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Net.Http.Headers">
-      <HintPath>C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\7.0.0\ref\net7.0\Microsoft.Net.Http.Headers.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.AspNetCore.Routing">
-      <HintPath>C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\7.0.0\ref\net7.0\Microsoft.AspNetCore.Routing.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.Primitives">
-      <HintPath>C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\7.0.0\ref\net7.0\Microsoft.Extensions.Primitives.dll</HintPath>
-    </Reference>
-	<Reference Include="System.IO.Pipelines">
-		<HintPath>C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\7.0.0\ref\net7.0\System.IO.Pipelines.dll</HintPath>
-	</Reference>
-  </ItemGroup>
   
   <ItemGroup>
-	<PackageReference Include="TypeSerialization" Version="1.0.6" />
-	<PackageReference Include="MetaFile.Http.AspNetCore" Version="1.0.5" />
+	<PackageReference Include="TypeSerialization" Version="1.1.0" />
+	<PackageReference Include="MetaFile.Http.AspNetCore" Version="1.1.0" />
+  </ItemGroup>
+	
+  <PropertyGroup>
+  	<AspNetCoreRef Condition="'$(TargetFramework)' == 'net6.0'">C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.25\ref\net6.0</AspNetCoreRef>
+  	<AspNetCoreRef Condition="'$(TargetFramework)' == 'net7.0'">C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\7.0.14\ref\net7.0</AspNetCoreRef>
+  	<AspNetCoreRef Condition="'$(TargetFramework)' == 'net8.0'">C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\8.0.0\ref\net8.0</AspNetCoreRef>
+  </PropertyGroup>
+	
+  <ItemGroup>
+	<Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions">
+      <HintPath>$(AspNetCoreRef)\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+	</Reference>
+    <Reference Include="Microsoft.AspNetCore.Http.Abstractions">
+      <HintPath>$(AspNetCoreRef)\Microsoft.AspNetCore.Http.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNetCore.Http.Features">
+      <HintPath>$(AspNetCoreRef)\Microsoft.AspNetCore.Http.Features.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNetCore.Http.Results">
+      <HintPath>$(AspNetCoreRef)\Microsoft.AspNetCore.Http.Results.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Net.Http.Headers">
+      <HintPath>$(AspNetCoreRef)\Microsoft.Net.Http.Headers.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNetCore.Routing">
+      <HintPath>$(AspNetCoreRef)\Microsoft.AspNetCore.Routing.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Primitives">
+      <HintPath>$(AspNetCoreRef)\Microsoft.Extensions.Primitives.dll</HintPath>
+    </Reference>
+	<Reference Include="System.IO.Pipelines">
+		<HintPath>$(AspNetCoreRef)\System.IO.Pipelines.dll</HintPath>
+	</Reference>
   </ItemGroup>
 
 </Project>

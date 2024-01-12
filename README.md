@@ -14,7 +14,7 @@ Single/generic WebApi endpoint for mediators
 dotnet new web --name "SingleApiExample"
 cd SingleApiExample
 dotnet add package SingleApi
-dotnet add package MediatR.Extensions.Microsoft.DependencyInjection
+dotnet add package MediatR
 ```
 
 *Change Program.cs*
@@ -24,7 +24,7 @@ using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
 
 var app = builder.Build();
 
