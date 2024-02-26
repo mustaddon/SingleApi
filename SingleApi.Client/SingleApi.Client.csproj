@@ -6,9 +6,9 @@
     <Nullable>enable</Nullable>
     <SignAssembly>True</SignAssembly>
     <AssemblyOriginatorKeyFile>..\SingleApi.snk</AssemblyOriginatorKeyFile>
-	<AssemblyVersion>1.5.0</AssemblyVersion>
-    <FileVersion>1.5.0</FileVersion>
-    <Version>1.5.0</Version>
+	<AssemblyVersion>1.5.1</AssemblyVersion>
+    <FileVersion>1.5.1</FileVersion>
+    <Version>1.5.1</Version>
 	<Company></Company>
     <Authors>Leonid Salavatov</Authors>
     <Copyright>Leonid Salavatov 2024</Copyright>
@@ -30,7 +30,7 @@
   <ItemGroup>
     <PackageReference Include="MediatR.Contracts" Version="2.0.1" />
     <PackageReference Include="System.Net.Http.Json" Version="8.0.0" />
-	<PackageReference Include="TypeSerialization" Version="1.1.0" />
+	<PackageReference Include="TypeSerialization" Version="1.2.0" />
     <PackageReference Include="MetaFile.Http" Version="1.1.0" />
   </ItemGroup>
 
