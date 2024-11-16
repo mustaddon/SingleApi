@@ -1,15 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-  	<TargetFrameworks>net6.0;net7.0;net8.0</TargetFrameworks>
+  	<TargetFrameworks>net6.0;net7.0;net8.0;net9.0</TargetFrameworks>
   	<LangVersion>latest</LangVersion>
   	<Nullable>enable</Nullable>
   	<ImplicitUsings>enable</ImplicitUsings>
     <SignAssembly>True</SignAssembly>
   	<AssemblyOriginatorKeyFile>..\SingleApi.snk</AssemblyOriginatorKeyFile>
-  	<AssemblyVersion>1.5.1</AssemblyVersion>
-  	<FileVersion>1.5.1</FileVersion>
-  	<Version>1.5.1</Version>
+  	<AssemblyVersion>1.5.2</AssemblyVersion>
+  	<FileVersion>1.5.2</FileVersion>
+  	<Version>1.5.2</Version>
   	<Company></Company>
   	<Authors>Leonid Salavatov</Authors>
   	<Copyright>Leonid Salavatov 2024</Copyright>
@@ -29,14 +29,15 @@
   </PropertyGroup>
   
   <ItemGroup>
-	<PackageReference Include="TypeSerialization" Version="1.2.0" />
-	<PackageReference Include="MetaFile.Http.AspNetCore" Version="1.1.0" />
+	<PackageReference Include="TypeSerialization" Version="1.2.2" />
+	<PackageReference Include="MetaFile.Http.AspNetCore" Version="1.1.1" />
   </ItemGroup>
 	
   <PropertyGroup>
-  	<AspNetCoreRef Condition="'$(TargetFramework)' == 'net6.0'">C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.25\ref\net6.0</AspNetCoreRef>
-  	<AspNetCoreRef Condition="'$(TargetFramework)' == 'net7.0'">C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\7.0.14\ref\net7.0</AspNetCoreRef>
-  	<AspNetCoreRef Condition="'$(TargetFramework)' == 'net8.0'">C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\8.0.0\ref\net8.0</AspNetCoreRef>
+  	<AspNetCoreRef Condition="'$(TargetFramework)' == 'net6.0'">C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\6.0.36\ref\net6.0</AspNetCoreRef>
+  	<AspNetCoreRef Condition="'$(TargetFramework)' == 'net7.0'">C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\7.0.20\ref\net7.0</AspNetCoreRef>
+  	<AspNetCoreRef Condition="'$(TargetFramework)' == 'net8.0'">C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\8.0.11\ref\net8.0</AspNetCoreRef>
+  	<AspNetCoreRef Condition="'$(TargetFramework)' == 'net9.0'">C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\9.0.0\ref\net9.0</AspNetCoreRef>
   </PropertyGroup>
 	
   <ItemGroup>
@@ -61,7 +62,7 @@
     <Reference Include="Microsoft.Extensions.Primitives">
       <HintPath>$(AspNetCoreRef)\Microsoft.Extensions.Primitives.dll</HintPath>
     </Reference>
-	<Reference Include="System.IO.Pipelines">
+	<Reference Include="System.IO.Pipelines" Condition="'$(TargetFramework)' != 'net9.0'">
 		<HintPath>$(AspNetCoreRef)\System.IO.Pipelines.dll</HintPath>
 	</Reference>
   </ItemGroup>

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net6.0;net7.0;net8.0</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net6.0;net7.0;net8.0;net9.0</TargetFrameworks>
 	<RootNamespace>Test</RootNamespace>
     <Nullable>enable</Nullable>
 	<LangVersion>latest</LangVersion>
@@ -9,7 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="MediatR.Contracts" Version="2.0.1" />
-    <PackageReference Include="MetaFile" Version="1.1.0" />
+    <PackageReference Include="MetaFile" Version="1.1.1" />
   </ItemGroup>
 
   <ItemGroup>
